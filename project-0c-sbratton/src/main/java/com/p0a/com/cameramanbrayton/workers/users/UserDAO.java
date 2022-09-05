@@ -10,13 +10,14 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDAO {
 
-    public List<User> getAllUsers() {
+    private final String baseSelect = "SELECT id, given_name, surname, email, username, \"password\", salary\n " +
+            "FROM workersapp.workers;\n ";
 
-        String sql = "SELECT id, given_name, surname, email, username, \"password\", salary\n" +
-                "FROM workersapp.workers;\n ";
+    public List<User> getAllUsers() {
 
         List<User> allUsers = new ArrayList<>();
 
@@ -26,19 +27,9 @@ public class UserDAO {
 
                 // JDBC Statement objects are subject to SQL Injections
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(sql);
+                ResultSet resultSet = statement.executeQuery(baseSelect);
 
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(Integer.parseInt(String.valueOf(resultSet.getInt("id"))));
-                    user.setGiven_name(resultSet.getString("given_name"));
-                    user.setSurname(resultSet.getString("surname"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setPassword("***********"); // done for security purpose
-                    user.setSalary(resultSet.getInt("salary"));
-                    allUsers.add(user);
-                }
+                allUsers = mapResultSet(resultSet);
 
             }
         } catch (SQLException e) {
@@ -49,6 +40,32 @@ public class UserDAO {
         return allUsers;
 
     }
+
+    public Optional<User> findUserByUsernameAndPassword(String username, String password) {
+
+        String sql = baseSelect + "WHERE username = ? AND password = ?";
+
+        try {
+            //assert ConnectionFactory.getInstance() != null;
+            try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+
+                // JDBC Statement objects are subject to SQL Injections
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return mapResultSet(resultSet).stream().findFirst();
+
+            }
+        } catch (SQLException e) {
+            System.err.println("Something went wrong when communicating with the database!");
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+
+    }
+
     public int save(User user) {
 
         String sql = "INSERT INTO workersapp.workers" +
@@ -59,32 +76,45 @@ public class UserDAO {
 
 
 
-            PreparedStatement pstmt = conn.prepareStatement(sql, new String[]{"id"});
-            //pstmt.setObject(1, user.getId());
-            pstmt.setString(1, user.getGiven_name());
-            pstmt.setString(2, user.getSurname());
-            pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getUsername());
-            pstmt.setString(5, user.getPassword());
-            pstmt.setInt(6, user.getSalary());
+            PreparedStatement preparedStatement = conn.prepareStatement(sql, new String[]{"id"});
+            preparedStatement.setString(1, user.getGiven_name());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getUsername());
+            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setInt(6, user.getSalary());
 
-            pstmt.executeUpdate();
+            preparedStatement.executeUpdate();
 
-            //conn.commit();
-
-            ResultSet rs = pstmt.getGeneratedKeys();
-            rs.next();
-            user.setId(rs.getInt("id"));
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+            user.setId(resultSet.getInt("id"));
 
         } catch (SQLException e) {
-            /*System.err.println("Something went wrong when communicating with the database");
-            e.printStackTrace();*/
             log("Error", e.getMessage());
         }
 
         log("INFO", "Successfully persisted new user with id: " + user.getId());
 
         return user.getId();
+    }
+
+    private List<User> mapResultSet(ResultSet resultSet) throws SQLException {
+        List<User> users = new ArrayList<>();
+        while (resultSet.next()) {
+                User user = new User();
+                user.setId(Integer.parseInt(String.valueOf(resultSet.getInt("id"))));
+                user.setGiven_name(resultSet.getString("given_name"));
+                user.setSurname(resultSet.getString("surname"));
+                user.setEmail(resultSet.getString("email"));
+                user.setUsername(resultSet.getString("username"));
+                user.setPassword("***********"); // done for security purpose
+                user.setSalary(resultSet.getInt("salary"));
+                users.add(user);
+        }
+
+        return users;
+
     }
 
         public void log(String level, String message) {

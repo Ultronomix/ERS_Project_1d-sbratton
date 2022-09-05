@@ -1,30 +1,34 @@
 package main.java.com.p0a.com.cameramanbrayton.workers.common.util;
 
-//import main.java.com.p0a.com.cameramanbrayton.workers.common.screens.Screen;
-//import main.java.com.p0a.com.cameramanbrayton.workers.common.screens.WelcomeScreen;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import main.java.com.p0a.com.cameramanbrayton.workers.users.User;
+import main.java.com.p0a.com.cameramanbrayton.workers.users.UserDAO;
 
 public class AppContext {
 
     private static boolean appRunning;
-    private final BufferedReader consoleReader;
 
     public AppContext() {
         appRunning = true;
-        consoleReader = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public void startApp() {
         while (appRunning) {
             try {
-                /*Screen currentScreen = new WelcomeScreen(consoleReader);
-                currentScreen.render();*/
-                System.out.println("The app is started, but will close immediately");
+                UserDAO userDAO = new UserDAO();
+                userDAO.getAllUsers().forEach(System.out::println);
                 appRunning = false;
+                /*System.out.println("The app is started, but will close immediately");
+                appRunning = false;
+                UserDAO userDAO = new UserDAO();
+                //userDAO.getAllUsers().forEach(System.out::println);
+                User loggedInUser = userDAO.findUserByUsernameAndPassword("pnewman", "p$$WORD")
+                        .orElseThrow(() -> new RuntimeException("No User found with the provided credentials"));
+
+                System.out.println("Successfully loggedIn user: " + loggedInUser);
+                appRunning = false;*/
             } catch (Exception e) {
                 e.printStackTrace();
+                appRunning = false;
             }
         }
     }
@@ -32,6 +36,5 @@ public class AppContext {
     public static void shutdown() {
         appRunning = false;
     }
-
 
 }
