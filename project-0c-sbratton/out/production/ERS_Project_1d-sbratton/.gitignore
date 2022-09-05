@@ -1,0 +1,11 @@
+.idea/
+project-0c-sbratton/target/
+resources/
+logs/
+
+*.class
+*.jar
+
+project-0c-sbratton/resources/application.properties
+
+ConnectionFactoryTest
