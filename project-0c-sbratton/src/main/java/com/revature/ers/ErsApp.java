@@ -1,9 +1,9 @@
-package com.p0a.com.cameramanbrayton.workers;
+package com.revature.ers;
 
-import main.java.com.p0a.com.cameramanbrayton.workers.auth.AuthService;
-import main.java.com.p0a.com.cameramanbrayton.workers.auth.AuthServlet;
-import main.java.com.p0a.com.cameramanbrayton.workers.users.UserDAO;
-import main.java.com.p0a.com.cameramanbrayton.workers.users.UserServlet;
+import com.revature.ers.auth.AuthService;
+import com.revature.ers.auth.AuthServlet;
+import com.revature.ers.users.UserDAO;
+import com.revature.ers.users.UserServlet;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 
@@ -30,6 +30,7 @@ public class ErsApp {
         webServer.addContext(rootContext, docBase);
         webServer.addServlet(rootContext,"UserServlet", userServlet).addMapping("/users");
         webServer.addServlet(rootContext,"AuthServlet", authServlet).addMapping("/auth");
+        //webServer.addServlet(rootContext, "ReimbursementServlet", rembServlet).addMapping("/reimbursement");
 
         // Starting and awaiting web request
         webServer.start();

@@ -1,7 +1,7 @@
-package main.java.com.p0a.com.cameramanbrayton.workers.users;
+package com.revature.ers.users;
 
-import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.ConnectionFactory;
-import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.exceptions.DataSourceException;
+import com.revature.ers.common.datasource.ConnectionFactory;
+import com.revature.ers.common.datasource.exceptions.DataSourceException;
 
 import java.io.BufferedWriter;
 import java.io.File;

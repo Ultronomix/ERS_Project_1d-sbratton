@@ -1,9 +1,9 @@
-package main.java.com.p0a.com.cameramanbrayton.workers.auth;
+package com.revature.ers.auth;
 
-import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.exceptions.AuthenticationException;
-import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.exceptions.InvalidRequestException;
-import main.java.com.p0a.com.cameramanbrayton.workers.users.UserDAO;
-import main.java.com.p0a.com.cameramanbrayton.workers.users.UserResponse;
+import com.revature.ers.common.datasource.exceptions.AuthenticationException;
+import com.revature.ers.common.datasource.exceptions.InvalidRequestException;
+import com.revature.ers.users.UserDAO;
+import com.revature.ers.users.UserResponse;
 
 public class AuthService {
 
@@ -36,7 +36,6 @@ public class AuthService {
         return userDAO.findUserByUsernameAndPassword(credentials.getUsername(), credentials.getPassword())
                 .map(UserResponse::new)
                 .orElseThrow(AuthenticationException::new);
-        // .orElseThrow(() -> new AuthenticationException());
 
     }
 

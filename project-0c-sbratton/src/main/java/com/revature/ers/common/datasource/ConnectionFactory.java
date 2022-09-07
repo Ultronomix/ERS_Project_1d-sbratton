@@ -1,4 +1,4 @@
-package main.java.com.p0a.com.cameramanbrayton.workers.common.datasource;
+package com.revature.ers.common.datasource;
 
 import java.io.FileReader;
 import java.io.IOException;

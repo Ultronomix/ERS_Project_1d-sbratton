@@ -1,4 +1,4 @@
-package main.java.com.p0a.com.cameramanbrayton.workers.users;
+package com.revature.ers.users;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -28,7 +28,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doPost(req, resp);
         resp.getWriter().write(("Post to /users works"));
     }
 }

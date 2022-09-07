@@ -1,4 +1,4 @@
-package main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.exceptions;
+package com.revature.ers.common.datasource.exceptions;
 
 public class DataSourceException extends RuntimeException {
 

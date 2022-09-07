@@ -1,4 +1,4 @@
-package main.java.com.p0a.com.cameramanbrayton.workers.auth;
+package com.revature.ers.auth;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,10 +6,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.exceptions.AuthenticationException;
-import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.exceptions.DataSourceException;
-import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.exceptions.InvalidRequestException;
-import main.java.com.p0a.com.cameramanbrayton.workers.users.UserResponse;
+import com.revature.ers.common.datasource.exceptions.AuthenticationException;
+import com.revature.ers.common.datasource.exceptions.DataSourceException;
+import com.revature.ers.common.datasource.exceptions.InvalidRequestException;
+import com.revature.ers.users.UserResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,10 +20,6 @@ public class AuthServlet extends HttpServlet {
     //private final UserDAO userDAO;
 
     private final AuthService authService;
-
-    /*public AuthServlet(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }*/
 
     public AuthServlet(AuthService authService) {
         this.authService = authService;

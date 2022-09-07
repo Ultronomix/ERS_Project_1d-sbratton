@@ -1,4 +1,4 @@
-package main.java.com.p0a.com.cameramanbrayton.workers.users;
+package com.revature.ers.users;
 
 import java.util.Objects;
 
