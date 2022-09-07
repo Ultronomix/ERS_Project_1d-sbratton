@@ -1,6 +1,7 @@
 package main.java.com.p0a.com.cameramanbrayton.workers.users;
 
 import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.ConnectionFactory;
+import main.java.com.p0a.com.cameramanbrayton.workers.common.datasource.exceptions.DataSourceException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,8 +15,8 @@ import java.util.Optional;
 
 public class UserDAO {
 
-    private final String baseSelect = "SELECT id, given_name, surname, email, username, \"password\", salary\n " +
-            "FROM workersapp.workers;\n ";
+    private final String baseSelect = "SELECT id, given_name, surname, email, username, \"password\", salary " +
+            "FROM workersapp.workers ";
 
     public List<User> getAllUsers() {
 
@@ -58,11 +59,13 @@ public class UserDAO {
 
             }
         } catch (SQLException e) {
-            System.err.println("Something went wrong when communicating with the database!");
-            e.printStackTrace();
+            // TODO Log this exception
+            throw new DataSourceException(e);
+            /*System.err.println("Something went wrong when communicating with the database!");
+            e.printStackTrace();*/
         }
 
-        return Optional.empty();
+        //return Optional.empty();
 
     }
 

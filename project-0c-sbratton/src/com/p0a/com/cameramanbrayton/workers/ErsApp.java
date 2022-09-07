@@ -1,12 +1,13 @@
 package com.p0a.com.cameramanbrayton.workers;
 
+import main.java.com.p0a.com.cameramanbrayton.workers.auth.AuthService;
 import main.java.com.p0a.com.cameramanbrayton.workers.auth.AuthServlet;
 import main.java.com.p0a.com.cameramanbrayton.workers.users.UserDAO;
 import main.java.com.p0a.com.cameramanbrayton.workers.users.UserServlet;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 
-public class App {
+public class ErsApp {
 
     public static void main( String[] args ) throws LifecycleException {
 
@@ -18,10 +19,11 @@ public class App {
         webServer.setPort(5000);
         webServer.getConnector(); // formality Required in order for the server to receive request
 
-        // App component instantiation
+        // ErsApp component instantiation
         UserDAO userDAO = new UserDAO();
+        AuthService authService = new AuthService(userDAO);
         UserServlet userServlet = new UserServlet(userDAO);
-        AuthServlet authServlet = new AuthServlet(userDAO);
+        AuthServlet authServlet = new AuthServlet(authService);
 
         // Web server context and servlet Configurations
         final String rootContext = "/workers";

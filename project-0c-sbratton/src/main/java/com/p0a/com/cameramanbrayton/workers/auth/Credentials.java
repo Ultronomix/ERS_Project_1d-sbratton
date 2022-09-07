@@ -1,5 +1,6 @@
 package main.java.com.p0a.com.cameramanbrayton.workers.auth;
 
+// this is an example of a request DTO
 public class Credentials {
 
     private String username;

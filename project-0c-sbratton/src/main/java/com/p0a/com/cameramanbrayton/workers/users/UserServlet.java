@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UserServlet extends HttpServlet {
 
-    private UserDAO userDAO = new UserDAO();
+    private final UserDAO userDAO; // TODO Replace with userService
 
     public UserServlet(UserDAO userDAO) {
 
@@ -24,5 +24,11 @@ public class UserServlet extends HttpServlet {
         resp.setContentType("application/json");
         List<User> allUsers = userDAO.getAllUsers();
         resp.getWriter().write(jsonMapper.writeValueAsString(allUsers));
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //super.doPost(req, resp);
+        resp.getWriter().write(("Post to /users works"));
     }
 }

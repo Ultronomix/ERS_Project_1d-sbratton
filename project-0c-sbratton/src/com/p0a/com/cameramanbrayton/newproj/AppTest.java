@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit test for simple App.
+ * Unit test for simple ErsApp.
  */
 public class AppTest {
     /**
