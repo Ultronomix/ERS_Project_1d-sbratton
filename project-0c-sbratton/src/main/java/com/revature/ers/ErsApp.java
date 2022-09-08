@@ -3,6 +3,7 @@ package com.revature.ers;
 import com.revature.ers.auth.AuthService;
 import com.revature.ers.auth.AuthServlet;
 import com.revature.ers.users.UserDAO;
+import com.revature.ers.users.UserService;
 import com.revature.ers.users.UserServlet;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -22,7 +23,8 @@ public class ErsApp {
         // ErsApp component instantiation
         UserDAO userDAO = new UserDAO();
         AuthService authService = new AuthService(userDAO);
-        UserServlet userServlet = new UserServlet(userDAO);
+        UserService userService = new UserService(userDAO);
+        UserServlet userServlet = new UserServlet(userService);
         AuthServlet authServlet = new AuthServlet(authService);
 
         // Web server context and servlet Configurations

@@ -17,7 +17,7 @@ public class ConnectionFactory {
         try {
             Class.forName("org.postgresql.Driver");
             //dbProps.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties"));
-            dbProps.load(new FileReader("project-0c-sbratton/resources/application.properties"));
+            dbProps.load(new FileReader("src/main/resources/application.properties"));
         } catch (IOException e) {
             // TODO replace RuntimeException with a custom exception
             throw new RuntimeException("Could not read from properties file.", e);

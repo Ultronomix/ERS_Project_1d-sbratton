@@ -41,6 +41,79 @@ public class UserDAO {
         return allUsers;
 
     }
+    //
+    public Optional<User> findUserById(Integer id) {
+
+        String sql = baseSelect + "WHERE id = ?";
+
+        try {
+            //assert ConnectionFactory.getInstance() != null;
+            try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+
+                // JDBC Statement objects are subject to SQL Injections
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, id);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return mapResultSet(resultSet).stream().findFirst();
+
+            }
+        } catch (SQLException e) {
+            // TODO Log this exception
+            throw new DataSourceException(e);
+        }
+
+    }
+    //
+    public Optional<User> findUserByUsername(String username) {
+
+        String sql = baseSelect + "WHERE username = ?";
+
+        try {
+            //assert ConnectionFactory.getInstance() != null;
+            try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+
+                // JDBC Statement objects are subject to SQL Injections
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, username);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return mapResultSet(resultSet).stream().findFirst();
+
+            }
+        } catch (SQLException e) {
+            // TODO Log this exception
+            throw new DataSourceException(e);
+        }
+
+    }
+
+    public boolean isUsernameTaken(String username) {
+        return findUserByUsername(username).isPresent();
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+
+        String sql = baseSelect + "WHERE email = ?";
+
+        try {
+            try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+
+                // JDBC Statement objects are subject to SQL Injections
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, email);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return mapResultSet(resultSet).stream().findFirst();
+
+            }
+        } catch (SQLException e) {
+            // TODO Log this exception
+            throw new DataSourceException(e);
+        }
+
+    }
+
+    public boolean isEmailTaken(String email) {
+        return findUserByEmail(email).isPresent();
+    }
 
     public Optional<User> findUserByUsernameAndPassword(String username, String password) {
 
@@ -61,11 +134,7 @@ public class UserDAO {
         } catch (SQLException e) {
             // TODO Log this exception
             throw new DataSourceException(e);
-            /*System.err.println("Something went wrong when communicating with the database!");
-            e.printStackTrace();*/
         }
-
-        //return Optional.empty();
 
     }
 
@@ -120,7 +189,7 @@ public class UserDAO {
 
     }
 
-        public void log(String level, String message) {
+        public void log(String level, String message) throws RuntimeException {
             try {
             File logFile = new File("logs/aap.log");
                 logFile.createNewFile();
