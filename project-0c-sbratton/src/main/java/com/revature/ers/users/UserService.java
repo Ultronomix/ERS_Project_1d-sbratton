@@ -18,14 +18,14 @@ public class UserService {
     }
 
     public  List<UserResponse> getAllUsers() {
-        // Imperative (more explicit about what is being done)
-        // List<UserResponse> result = new ArrayList<>();
-        //List<User> users = userDAO.getAllUsers();
-       // for (User user : users) {
-       //     result.add(new UserResponse(user));
-       // }
+        /*Imperative (more explicit about what is being done)
+            List<UserResponse> result = new ArrayList<>();
+            List<User> users = userDAO.getAllUsers();
+            for (User user : users) {
+            result.add(new UserResponse(user));
+         }
 
-      //  return result;
+      return result;*/
         // Functional approach (more declarative)
         return userDAO.getAllUsers()
                 .stream()
@@ -35,16 +35,25 @@ public class UserService {
     }
 
     //
-    public UserResponse getUserById(Integer id) {
+    public UserResponse getUserById(String idStr) {
 
-        if (id == null || id.intValue() <= 0) {
-            throw new InvalidRequestException("A non-empty ID must be provided!");
+        try {
+            int id = Integer.parseInt(idStr);
+
+            if (id <= 0) {
+                throw new InvalidRequestException("A invalid (non-positive) id was provided!");
+            }
+
+            return userDAO.findUserById(id)
+                    .map(UserResponse::new)
+                    .orElseThrow(ResourceNotFoundException::new);
+
+        } catch (NumberFormatException e) {
+            throw new InvalidRequestException("A non-numeric id value was provided!");
         }
 
-        return userDAO.findUserById(id)
-                .map(UserResponse::new)
-                .orElseThrow(ResourceNotFoundException::new);
     }
+
     //
     public ResourceCreationResponse register(NewUserRequest newUserRequest) {
 

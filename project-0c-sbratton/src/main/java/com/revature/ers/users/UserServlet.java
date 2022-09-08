@@ -30,7 +30,7 @@ public class UserServlet extends HttpServlet {
         ObjectMapper jsonMapper = new ObjectMapper();
         resp.setContentType("application/json");
         //
-        Integer idToSearchFor = req.getIntHeader("id");
+        String idToSearchFor = req.getParameter("id");
 
         try {
             if (idToSearchFor == null) {
