@@ -1,9 +1,10 @@
 package com.revature.ers.users;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 // example of a response DTO
-public class UserResponse {
+public class UserResponse implements Serializable {
 
     private Integer id;
     private String given_name;

@@ -2,12 +2,14 @@ package com.revature.ers.users;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ers.common.AppUtils;
 import com.revature.ers.common.ResourceCreationResponse;
 import com.revature.ers.common.datasource.exceptions.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,10 +31,60 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
         resp.setContentType("application/json");
-        //
-        String idToSearchFor = req.getParameter("id");
+
+        HttpSession userSession = req.getSession(false);
+
+        // If userSession is null, this means that the requester is not authenticated with the server
+        if (userSession /*!=*/ == null) {
+            // TODO Encapsulate air response creation into its own utility method
+            resp.setStatus(401);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("statusCode", 401);
+            errorResponse.put("message", "Requester is not authenticated with the system, please login.");
+            errorResponse.put("timestamp", System.currentTimeMillis());
+            resp.getWriter().write(jsonMapper.writeValueAsString(errorResponse));
+            return;
+
+            /*UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
+            //System.out.println(userSession.getAttribute("authUser"));
+            System.out.println(requester.getEmail());*/
+        }
+
+        /*UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
+
+        if (!requester.getEmail().equals("kam789@revature.com")) {
+
+            // TODO Encapsulate air response creation into its own utility method
+            resp.setStatus(403); // Forbidden the system recognizes the user, but they don't have permission to be here
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("statusCode", 403);
+            errorResponse.put("message", "Requester is not Permitted to communicate with this endpoint.");
+            errorResponse.put("timestamp", System.currentTimeMillis());
+            resp.getWriter().write(jsonMapper.writeValueAsString(errorResponse));
+            return;
+        }*/
+
 
         try {
+
+            String idToSearchFor = req.getParameter("id");
+            UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
+
+            System.out.println("request is admin: " + requesterIsAdmin(requester));
+            System.out.println("requester owns requested resource: " + requesterOwned(idToSearchFor, requester.getId()));
+
+            if (!requesterIsAdmin(requester) && !requesterOwned(idToSearchFor, requester.getId())) {
+
+                // TODO Encapsulate air response creation into its own utility method
+                resp.setStatus(403); // Forbidden the system recognizes the user, but they don't have permission to be here
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("statusCode", 403);
+                errorResponse.put("message", "Requester is not Permitted to communicate with this endpoint.");
+                errorResponse.put("timestamp", System.currentTimeMillis());
+                resp.getWriter().write(jsonMapper.writeValueAsString(errorResponse));
+                return;
+            }
+
             if (idToSearchFor == null) {
                 List<UserResponse> allUsers = userService.getAllUsers();
                 resp.getWriter().write(jsonMapper.writeValueAsString(allUsers));
@@ -105,5 +157,14 @@ public class UserServlet extends HttpServlet {
             errorResponse.put("timestamp", System.currentTimeMillis()/*LocalDateTime.now()*/);
             resp.getWriter().write(jsonMapper.writeValueAsString(errorResponse));
         }
+    }
+
+    public boolean requesterIsAdmin(UserResponse requester) {
+        return requester.getEmail().equals("kam789@revature.com"); // || requester.getEmail().equals("kam789@revature.com");
+    }
+
+    public boolean requesterOwned(String resourceId, Integer requesterId) {
+        if (resourceId == null) return false;
+        return requesterId.equals(AppUtils.parseInt(resourceId));
     }
 }

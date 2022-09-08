@@ -1,5 +1,6 @@
 package com.revature.ers.users;
 
+import com.revature.ers.common.AppUtils;
 import com.revature.ers.common.ResourceCreationResponse;
 import com.revature.ers.common.datasource.exceptions.InvalidRequestException;
 import com.revature.ers.common.datasource.exceptions.ResourceNotFoundException;
@@ -37,20 +38,15 @@ public class UserService {
     //
     public UserResponse getUserById(String idStr) {
 
-        try {
-            int id = Integer.parseInt(idStr);
+        int id = AppUtils.parseInt(idStr);
 
-            if (id <= 0) {
-                throw new InvalidRequestException("A invalid (non-positive) id was provided!");
-            }
-
-            return userDAO.findUserById(id)
-                    .map(UserResponse::new)
-                    .orElseThrow(ResourceNotFoundException::new);
-
-        } catch (NumberFormatException e) {
-            throw new InvalidRequestException("A non-numeric id value was provided!");
+        if (id <= 0) {
+            throw new InvalidRequestException("A invalid (non-positive) id was provided!");
         }
+
+        return userDAO.findUserById(id)
+                .map(UserResponse::new)
+                .orElseThrow(ResourceNotFoundException::new);
 
     }
 

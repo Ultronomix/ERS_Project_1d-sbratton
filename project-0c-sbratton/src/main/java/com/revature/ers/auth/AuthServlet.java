@@ -10,6 +10,7 @@ import com.revature.ers.common.datasource.exceptions.AuthenticationException;
 import com.revature.ers.common.datasource.exceptions.DataSourceException;
 import com.revature.ers.common.datasource.exceptions.InvalidRequestException;
 import com.revature.ers.users.UserResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,6 +35,10 @@ public class AuthServlet extends HttpServlet {
             Credentials credentials = jsonMapper.readValue(req.getInputStream(), Credentials.class);
             UserResponse responseBody = authService.authenticate(credentials);
             resp.setStatus(200); // Ok: technically this is the default
+
+            HttpSession userSession = req.getSession();
+            userSession.setAttribute("authUser", responseBody);
+
             resp.getWriter().write(jsonMapper.writeValueAsString(responseBody));
 
         } catch (InvalidRequestException | JsonMappingException e) {
