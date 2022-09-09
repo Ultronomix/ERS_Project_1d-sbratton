@@ -117,6 +117,8 @@ public class UserDAO {
 
     public Optional<User> findUserByUsernameAndPassword(String username, String password) {
 
+        System.out.println("WAS CALLED");
+
         String sql = baseSelect + "WHERE username = ? AND password = ?";
 
         try {

@@ -13,6 +13,24 @@ public class User {
     private String password;
     private int salary;
 
+    public User() {
+        super();
+    }
+
+    public User(int id, String given_name, String surname, String email, String username, String password, int salary) {
+        this.id = id;
+        this.given_name = given_name;
+        this.surname = surname;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.salary = salary;
+    }
+
+    public User(String s, String val, String id, String email, String valid, String credentials, String s1) {
+
+    }
+
     public int getId() {
         return id;
     }
