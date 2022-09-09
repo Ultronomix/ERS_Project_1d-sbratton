@@ -112,11 +112,11 @@ public class UserServlet extends HttpServlet {
     }
 
     public boolean requesterIsAdmin(UserResponse requester) {
-        return requester.getEmail().equals("pau234@revature.com"); // || requester.getEmail().equals("kam789@revature.com");
+        return requester.getEmail().equals("sam345@revature.com" /*Password= p4$$WORD1|| requester.getEmail().equals("kam789@revature.com"*/);
     }
 
-    public boolean requesterOwned(String resourceId, Integer requesterId) {
+    public boolean requesterOwned(String resourceId, String requesterId) {
         if (resourceId == null) return false;
-        return requesterId.equals(AppUtils.parseInt(resourceId));
+        return requesterId.equals(resourceId);
     }
 }

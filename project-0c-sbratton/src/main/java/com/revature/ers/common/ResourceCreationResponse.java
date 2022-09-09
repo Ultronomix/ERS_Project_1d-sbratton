@@ -5,7 +5,7 @@ public class ResourceCreationResponse {
 
     private String resourceId;
 
-    public ResourceCreationResponse(int resourceId) {
+    public ResourceCreationResponse(String resourceId) {
         this.resourceId = String.valueOf(resourceId);
     }
 

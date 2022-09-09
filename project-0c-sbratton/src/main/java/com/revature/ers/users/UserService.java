@@ -83,8 +83,7 @@ public class UserService {
         }
 
         User userToPersist = newUserRequest.extractEntity();
-        Integer newUserId;
-        newUserId = userDAO.save(userToPersist);
+        String newUserId = userDAO.save(userToPersist);
         return new ResourceCreationResponse(newUserId);
 
     }

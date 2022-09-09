@@ -117,8 +117,6 @@ public class UserDAO {
 
     public Optional<User> findUserByUsernameAndPassword(String username, String password) {
 
-        System.out.println("WAS CALLED");
-
         String sql = baseSelect + "WHERE username = ? AND password = ?";
 
         try {
@@ -140,7 +138,7 @@ public class UserDAO {
 
     }
 
-    public int save(User user) {
+    public String save(User user) {
 
         String sql = "INSERT INTO workersapp.workers" +
                 "(given_name, surname, email, username, password, salary)" +
@@ -162,7 +160,7 @@ public class UserDAO {
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
-            user.setId(resultSet.getInt("id"));
+            user.setId(resultSet.getString("id"));
 
         } catch (SQLException e) {
             log("Error", e.getMessage());
@@ -177,7 +175,7 @@ public class UserDAO {
         List<User> users = new ArrayList<>();
         while (resultSet.next()) {
                 User user = new User();
-                user.setId(Integer.parseInt(String.valueOf(resultSet.getInt("id"))));
+                user.setId(resultSet.getString("id"));
                 user.setGiven_name(resultSet.getString("given_name"));
                 user.setSurname(resultSet.getString("surname"));
                 user.setEmail(resultSet.getString("email"));

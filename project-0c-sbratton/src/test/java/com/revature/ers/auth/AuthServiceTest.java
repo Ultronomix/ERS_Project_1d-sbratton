@@ -57,9 +57,7 @@ public class AuthServiceTest {
         Credentials credentialsStub = new Credentials("invalid", "creds");
 
         // Act & Assert
-        assertThrows(InvalidRequestException.class, () -> {
-            sut.authenticate(credentialsStub);
-        });
+        assertThrows(InvalidRequestException.class, () -> sut.authenticate(credentialsStub));
 
         verify(mockUserDAO, times(0)).findUserByUsernameAndPassword(anyString(), anyString());
 

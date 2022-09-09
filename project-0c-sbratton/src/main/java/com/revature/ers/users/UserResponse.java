@@ -6,7 +6,7 @@ import java.util.Objects;
 // example of a response DTO
 public class UserResponse implements Serializable {
 
-    private Integer id;
+    private String id;
     private String given_name;
     private String surname;
     private String email;
@@ -22,11 +22,11 @@ public class UserResponse implements Serializable {
 
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

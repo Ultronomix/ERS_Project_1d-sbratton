@@ -5,7 +5,7 @@ import java.util.Objects;
 // POJO = Plain Ol' Java Objects
 public class User {
 
-    private int id;
+    private String id;
     private String given_name;
     private String surname;
     private String email;
@@ -17,7 +17,7 @@ public class User {
         super();
     }
 
-    public User(int id, String given_name, String surname, String email, String username, String password, int salary) {
+    public User(String id, String given_name, String surname, String email, String username, String password, int salary) {
         this.id = id;
         this.given_name = given_name;
         this.surname = surname;
@@ -31,11 +31,11 @@ public class User {
 
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
