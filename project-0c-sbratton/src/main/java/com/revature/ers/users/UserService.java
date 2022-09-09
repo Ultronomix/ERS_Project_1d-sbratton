@@ -27,6 +27,7 @@ public class UserService {
          }
 
       return result;*/
+
         // Functional approach (more declarative)
         return userDAO.getAllUsers()
                 .stream()

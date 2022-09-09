@@ -2,6 +2,7 @@ package com.revature.ers.auth;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ers.common.ErrorResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,8 @@ public class AuthServlet extends HttpServlet {
             UserResponse responseBody = authService.authenticate(credentials);
             resp.setStatus(200); // Ok: technically this is the default
 
+            // Establishes on http://session that is implicitly attached to the response as a cookie
+            // The web client will automatically attach this cookie to subsequent request to the server
             HttpSession userSession = req.getSession();
             userSession.setAttribute("authUser", responseBody);
 
@@ -45,30 +48,23 @@ public class AuthServlet extends HttpServlet {
 
             // TODO Encapsulate air response creation into its own utility method
             resp.setStatus(400); // Bad request
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("statusCode", 400);
-            errorResponse.put("message", e.getMessage());
-            errorResponse.put("timestamp", System.currentTimeMillis()/*LocalDateTime.now()*/);
-            resp.getWriter().write(jsonMapper.writeValueAsString(errorResponse));
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(400, e.getMessage())));
+
         } catch (AuthenticationException e) {
 
             resp.setStatus(401); // Unauthorized: Typically sent back when login fails or if a protected endpoint is hit by unauthorized user
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("statusCode", 401);
-            errorResponse.put("message", e.getMessage());
-            errorResponse.put("timestamp", System.currentTimeMillis()/*LocalDateTime.now()*/);
-            resp.getWriter().write(jsonMapper.writeValueAsString(errorResponse));
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(401, e.getMessage())));
+
         } catch (DataSourceException e) {
 
             resp.setStatus(500); // Internal server error: Typically sent back when login fails or if a protected endpoint is hit by unauthorized user
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("statusCode", 500);
-            errorResponse.put("message", e.getMessage());
-            errorResponse.put("timestamp", System.currentTimeMillis()/*LocalDateTime.now()*/);
-            resp.getWriter().write(jsonMapper.writeValueAsString(errorResponse));
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(500, e.getMessage())));
         }
+    }
 
-
-
+    // Logout
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getSession().invalidate(); // This effectively logs out the requester by invalidating the session within the server
     }
 }
