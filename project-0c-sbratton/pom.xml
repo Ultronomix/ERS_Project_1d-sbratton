@@ -11,31 +11,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>13</maven.compiler.source>
-    <maven.compiler.target>13</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
-
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-engine</artifactId>
-      <version>1.9.0</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.7.0</version>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -62,6 +42,72 @@
       <version>10.0.23</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.9.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.7.0</version>
+      <scope>test</scope>
+    </dependency>
+
+
   </dependencies>
+
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>0.7.7.201606060606</version>
+      <configuration>
+        <excludes>
+          <exclude>com/revature/ers/common/datasource/*</exclude>
+          <exclude>com/revature/ers/common/datasource/exceptions/*</exclude>
+          <exclude>com/revature/ers/users/NewUserRequest.*</exclude>
+          <exclude>com/revature/ers/users/UserResponse.*</exclude>
+          <exclude>com/revature/ers/users/UserDAO.*</exclude>
+          <exclude>com/revature/ers/users/User.*</exclude>
+          <exclude>com/revature/ers/users/UserServlet.*</exclude>
+          <exclude>com/revature/ers/ErsApp.*</exclude>
+          <exclude>com/revature/ers/common/ResourceCreationResponse.*</exclude>
+          <exclude>com/revature/ers/common/Request.*</exclude>
+          <exclude>com/revature/ers/auth/AuthServlet.*</exclude>
+          <exclude>com/revature/ers/auth/Credentials.*</exclude>
+          <exclude>com/revature/ers/common/AppUtils.*</exclude>
+        </excludes>
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>prepare-agent</goal>
+          </goals>
+        </execution>
+        <execution>
+          <id>report</id>
+          <phase>prepare-package</phase>
+          <goals>
+            <goal>report</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>2.22.2</version>
+      <configuration>
+        <forkCount>3</forkCount>
+        <reuseForks>true</reuseForks>
+      </configuration>
+    </plugin>
+  </plugins>
+
+</build>
 
 </project>

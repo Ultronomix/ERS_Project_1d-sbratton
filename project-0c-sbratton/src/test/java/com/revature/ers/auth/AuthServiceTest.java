@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import javax.naming.AuthenticationException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,7 +52,20 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void test_authenticate_throwsInvalidRequestException_givenInvalidCredentials() {
+    public void test_authenticate_throwsInvalidRequestException_givenToShortOfUsername() {
+
+        // Arrange
+        Credentials credentialsStub = new Credentials("x", "p4$$2WORD");
+
+        // Act & Assert
+        assertThrows(InvalidRequestException.class, () -> sut.authenticate(credentialsStub));
+
+        verify(mockUserDAO, times(0)).findUserByUsernameAndPassword(anyString(), anyString());
+
+    }
+
+    @Test
+    public void test_authenticate_throwsInvalidRequestException_givenToShortOfPassword() {
 
         // Arrange
         Credentials credentialsStub = new Credentials("invalid", "creds");
@@ -63,9 +77,35 @@ public class AuthServiceTest {
 
     }
 
+    @Test
+    public void test_authenticate_throwsInvalidRequestException_givenNullCredentials() {
+
+        // Arrange
+        Credentials credentialsStub = null;
+
+        // Act & Assert
+        assertThrows(InvalidRequestException.class, () -> sut.authenticate(credentialsStub));
+
+        verify(mockUserDAO, times(0)).findUserByUsernameAndPassword(anyString(), anyString());
+
+    }
+
+    // TODO: Won't be able to perform until all Integers are changed to strings
     /*@Test
     public void test_authenticate_throwsInvalidRequestException_givenInvalidCredentials() {
-        // TODO: Implement this test
+        // Arrange
+        Credentials credentialsStub = new Credentials("unknown", "credentials");
+        /*User userStub = new User("some-id", "Val", "id", "valid123@revature.com", "valid", "credentials", "25000");
+        when(mockUserDAO.findUserByUsernameAndPassword(anyString(), anyString())).thenReturn(Optional.empty());
+        UserResponse expectedResult = new UserResponse(userStub);
+
+        // Act
+        assertThrows(AuthenticationException.class, () -> {
+            sut.authenticate(credentialsStub);
+        });
+
+        // Assert
+        verify(mockUserDAO, times(1)).findUserByUsernameAndPassword(anyString(), anyString());
     }*/
 
 }
