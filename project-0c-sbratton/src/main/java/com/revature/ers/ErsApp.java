@@ -7,11 +7,16 @@ import com.revature.ers.users.UserService;
 import com.revature.ers.users.UserServlet;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ErsApp {
 
+    private static Logger logger = LogManager.getLogger(ErsApp.class);
+
     public static void main( String[] args ) throws LifecycleException {
 
+        logger.info("Starting ErsApp");
         String docBase = System.getProperty("java.io.tmpdir");
         Tomcat webServer = new Tomcat();
 
@@ -36,8 +41,11 @@ public class ErsApp {
 
         // Starting and awaiting web request
         webServer.start();
+        logger.info("ErsApp Web application successfully started");
         webServer.getServer().await();
         //System.out.println("Web application successfully started");
+
+
 
     }
 
