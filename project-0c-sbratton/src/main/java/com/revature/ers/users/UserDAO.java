@@ -18,6 +18,9 @@ public class UserDAO {
     private final String baseSelect = "SELECT id, given_name, surname, email, username, \"password\", salary " +
             "FROM workersapp.workers ";
 
+    /*private final String baseSelect = "SELECT user_id, username, email, \"password\", given_name, surname, is_active, role_id " +
+            "FROM "ERS".ers_users ";*/
+
     public List<User> getAllUsers() {
 
         List<User> allUsers = new ArrayList<>();
@@ -41,7 +44,7 @@ public class UserDAO {
         return allUsers;
 
     }
-    //
+
     public Optional<User> findUserById(Integer id) {
 
         String sql = baseSelect + "WHERE id = ?";
@@ -63,7 +66,28 @@ public class UserDAO {
         }
 
     }
-    //
+    // below will be used in replacement
+    /* public Optional<User> findUserById(String user_id) {
+
+        String sql = baseSelect + "WHERE user_id = ?";
+
+        try {
+            //assert ConnectionFactory.getInstance() != null;
+            try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+
+                // JDBC Statement objects are subject to SQL Injections
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setObject(1, id);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return mapResultSet(resultSet).stream().findFirst();
+
+            }
+        } catch (SQLException e) {
+            // TODO Log this exception
+            throw new DataSourceException(e);
+        }
+
+    } */
     public Optional<User> findUserByUsername(String username) {
 
         String sql = baseSelect + "WHERE username = ?";
@@ -144,6 +168,10 @@ public class UserDAO {
                 "(given_name, surname, email, username, password, salary)" +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
+        /* String sql = "INSERT INTO "ERS".ers_users" +
+                "(username, email, "password", given_name, surname)" +
+                "VALUES(?, ?, ?, ?, ?); */
+
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
 
@@ -155,6 +183,13 @@ public class UserDAO {
             preparedStatement.setString(4, user.getUsername());
             preparedStatement.setString(5, user.getPassword());
             preparedStatement.setInt(6, user.getSalary());
+
+            /* PreparedStatement preparedStatement = conn.prepareStatement(sql, new String[]{"id"});
+            preparedStatement.setString(4, user.getUsername());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setString(1, user.getGiven_name());
+            preparedStatement.setString(2, user.getSurname()); */
 
             preparedStatement.executeUpdate();
 
