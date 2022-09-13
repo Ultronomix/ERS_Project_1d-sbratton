@@ -51,9 +51,9 @@ public class UserServlet extends HttpServlet {
             UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
 
             System.out.println("request is admin: " + requesterIsAdmin(requester));
-            System.out.println("requester owns requested resource: " + requesterOwned(idToSearchFor, requester.getId()));
+            System.out.println("requester owns requested resource: " + requesterOwned(idToSearchFor, requester.getUser_id()));
 
-            if (!requesterIsAdmin(requester) && !requesterOwned(idToSearchFor, requester.getId())) {
+            if (!requesterIsAdmin(requester) && !requesterOwned(idToSearchFor, requester.getUser_id())) {
                 resp.setStatus(403); // Forbidden the system recognizes the user, but they don't have permission to be here
                 resp.getWriter().write(jsonMapper.writeValueAsString(
                         /*errorResponse*/new ErrorResponse(403,
@@ -112,7 +112,7 @@ public class UserServlet extends HttpServlet {
     }
 
     public boolean requesterIsAdmin(UserResponse requester) {
-        return requester.getEmail().equals("sam345@revature.com" /*Password= p4$$WORD1|| requester.getEmail().equals("kam789@revature.com"*/);
+        return requester.getEmail().equals("bar123@revature.com");
     }
 
     public boolean requesterOwned(String resourceId, String requesterId) {

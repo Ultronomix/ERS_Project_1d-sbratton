@@ -10,6 +10,13 @@ public class NewUserRequest implements Request<User> {
     private String username;
     private String password;
 
+    /* private String username;
+    private String email;
+    private String password;
+    private String given_name;
+    private String surname;
+    private String is_active;*/
+
     public String getGiven_name() {
         return given_name;
     }

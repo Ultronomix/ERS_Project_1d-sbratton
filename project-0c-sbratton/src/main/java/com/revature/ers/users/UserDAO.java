@@ -15,11 +15,11 @@ import java.util.Optional;
 
 public class UserDAO {
 
-    private final String baseSelect = "SELECT id, given_name, surname, email, username, \"password\", salary " +
-            "FROM workersapp.workers ";
+    /*private final String baseSelect = "SELECT id, given_name, surname, email, username, \"password\", salary " +
+            "FROM workersapp.workers ";*/
 
-    /*private final String baseSelect = "SELECT user_id, username, email, \"password\", given_name, surname, is_active, role_id " +
-            "FROM "ERS".ers_users ";*/
+    private final String baseSelect = "SELECT user_id, username, email, \"password\", given_name, surname, is_active, role_id " +
+            "FROM ers.ers_users ";
 
     public List<User> getAllUsers() {
 
@@ -47,7 +47,7 @@ public class UserDAO {
 
     public Optional<User> findUserById(Integer id) {
 
-        String sql = baseSelect + "WHERE id = ?";
+        String sql = baseSelect + "WHERE user_id = ?";
 
         try {
             //assert ConnectionFactory.getInstance() != null;
@@ -55,7 +55,7 @@ public class UserDAO {
 
                 // JDBC Statement objects are subject to SQL Injections
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1, id);
+                preparedStatement.setObject(1, id);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 return mapResultSet(resultSet).stream().findFirst();
 
@@ -164,59 +164,54 @@ public class UserDAO {
 
     public String save(User user) {
 
-        String sql = "INSERT INTO workersapp.workers" +
+        /* String sql = "INSERT INTO workersapp.workers" +
                 "(given_name, surname, email, username, password, salary)" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?)"; */
 
-        /* String sql = "INSERT INTO "ERS".ers_users" +
-                "(username, email, "password", given_name, surname)" +
-                "VALUES(?, ?, ?, ?, ?); */
+        String sql = "INSERT INTO ers.ers_users" +
+                "(username, email, password, given_name, surname, is_active, role_id)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, false, ?)";
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
 
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql, new String[]{"id"});
-            preparedStatement.setString(1, user.getGiven_name());
-            preparedStatement.setString(2, user.getSurname());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getUsername());
-            preparedStatement.setString(5, user.getPassword());
-            preparedStatement.setInt(6, user.getSalary());
-
-            /* PreparedStatement preparedStatement = conn.prepareStatement(sql, new String[]{"id"});
-            preparedStatement.setString(4, user.getUsername());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(5, user.getPassword());
-            preparedStatement.setString(1, user.getGiven_name());
-            preparedStatement.setString(2, user.getSurname()); */
+            PreparedStatement preparedStatement = conn.prepareStatement(sql, new String[]{"user_id"});
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getGiven_name());
+            preparedStatement.setString(5, user.getSurname());
+            preparedStatement.setBoolean(6, user.getIs_active());
+            preparedStatement.setString(7, user.getRole_id());
 
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
-            user.setId(resultSet.getString("id"));
+            user.setUser_id(resultSet.getString("user_id"));
 
         } catch (SQLException e) {
             log("Error", e.getMessage());
         }
 
-        log("INFO", "Successfully persisted new user with id: " + user.getId());
+        log("INFO", "Successfully persisted new user with user_id: " + user.getUser_id());
 
-        return user.getId();
+        return user.getUser_id();
     }
 
     private List<User> mapResultSet(ResultSet resultSet) throws SQLException {
         List<User> users = new ArrayList<>();
         while (resultSet.next()) {
                 User user = new User();
-                user.setId(resultSet.getString("id"));
+                user.setUser_id(resultSet.getString("user_id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword("***********"); // done for security purpose
                 user.setGiven_name(resultSet.getString("given_name"));
                 user.setSurname(resultSet.getString("surname"));
-                user.setEmail(resultSet.getString("email"));
-                user.setUsername(resultSet.getString("username"));
-                user.setPassword("***********"); // done for security purpose
-                user.setSalary(resultSet.getInt("salary"));
+                user.setIs_active(String.valueOf(resultSet.getBoolean("is_active")).isEmpty());
+                user.setRole_id(resultSet.getString("role_id"));
                 users.add(user);
         }
 

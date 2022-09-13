@@ -33,7 +33,7 @@ public class ErsApp {
         AuthServlet authServlet = new AuthServlet(authService);
 
         // Web server context and servlet Configurations
-        final String rootContext = "/workers";
+        final String rootContext = "/ers";
         webServer.addContext(rootContext, docBase);
         webServer.addServlet(rootContext,"UserServlet", userServlet).addMapping("/users");
         webServer.addServlet(rootContext,"AuthServlet", authServlet).addMapping("/auth");
