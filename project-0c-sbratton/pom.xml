@@ -128,7 +128,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>com.revature.ers.ErsApp.java</mainClass>
+            <mainClass>com.revature.ers.ErsApp</mainClass>
           </manifest>
         </archive>
       </configuration>
