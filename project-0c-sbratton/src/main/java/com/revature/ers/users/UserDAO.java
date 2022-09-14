@@ -15,9 +15,6 @@ import java.util.Optional;
 
 public class UserDAO {
 
-    /*private final String baseSelect = "SELECT id, given_name, surname, email, username, \"password\", salary " +
-            "FROM workersapp.workers ";*/
-
     private final String baseSelect = "SELECT user_id, username, email, \"password\", given_name, surname, is_active, role_id " +
             "FROM ers.ers_users ";
 
@@ -66,28 +63,6 @@ public class UserDAO {
         }
 
     }
-    // below will be used in replacement
-    /* public Optional<User> findUserById(String user_id) {
-
-        String sql = baseSelect + "WHERE user_id = ?";
-
-        try {
-            //assert ConnectionFactory.getInstance() != null;
-            try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
-
-                // JDBC Statement objects are subject to SQL Injections
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setObject(1, id);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                return mapResultSet(resultSet).stream().findFirst();
-
-            }
-        } catch (SQLException e) {
-            // TODO Log this exception
-            throw new DataSourceException(e);
-        }
-
-    } */
     public Optional<User> findUserByUsername(String username) {
 
         String sql = baseSelect + "WHERE username = ?";
@@ -156,17 +131,13 @@ public class UserDAO {
 
             }
         } catch (SQLException e) {
-            // TODO Log this exception
+            // TODO Log this exception - Finished
             throw new DataSourceException(e);
         }
 
     }
 
     public String save(User user) {
-
-        /* String sql = "INSERT INTO workersapp.workers" +
-                "(given_name, surname, email, username, password, salary)" +
-                "VALUES (?, ?, ?, ?, ?, ?)"; */
 
         String sql = "INSERT INTO ers.ers_users" +
                 "(username, email, password, given_name, surname, is_active, role_id)" +
