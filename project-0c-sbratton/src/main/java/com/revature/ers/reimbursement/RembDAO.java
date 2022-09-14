@@ -81,53 +81,46 @@ public class RembDAO {
 
         public String save(Reimbursements reimbursements) {
 
-        String sql = "INSERT INTO ers.ers_reimbursements" +
-                "(reimb_id, amount, submitted, resolved, description, receipt, payment_id, author_id, resolver_id, status_id, type_id)" +
-                "VALUES(?, 0, ?, ?, , 0, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ers.ers_reimbursements " +
+                "(reimb_id, amount, submitted, resolved, description, author_id, resolver_id, status_id, type_id) " +
+                "VALUES (?, 0, ?, ?, ?, 0, ?, ?, ?, ?)";
 
         try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
 
-            PreparedStatement.setString(1, reimbursements.getReimb_id());
-            PreparedStatement.setInteger(2, reimbursements.getAmount());
-            PreparedStatement.setTimestamp(3, reimbursements.getSubmitted());
-            PreparedStatement.setTimestamp(4, reimbursements.getResolved());
-            PreparedStatement.setString(5, reimbursements.getDescription());
-            PreparedStatement.setOid(6, reimbursements.getReceipt());
-            PreparedStatement.setString(7, reimbursements.getPayment_id());
-            PreparedStatement.setString(8, reimbursements.getAuthor_id());
-            PreparedStatement.setString(9, reimbursements.getResolver_id());
-            PreparedStatement.setString(10, reimbursements.getStatus_id());
-            PreparedStatement.setString(11, reimbursements.getType_id());
+            PreparedStatement pstmt = connection.prepareStatement(sql, new String[] {"reimb_id"});
+            pstmt.setInt(1, reimbursements.getAmount());
+            pstmt.setTimestamp(2, reimbursements.getSubmitted());
+            pstmt.setTimestamp(3, reimbursements.getResolved());
+            pstmt.setString(4, reimbursements.getDescription());
+            pstmt.setString(5, reimbursements.getAuthor_id());
+            pstmt.setString(6, reimbursements.getResolver_id());
+            pstmt.setString(7, reimbursements.getStatus_id());
+            pstmt.setString(8, reimbursements.getType_id());
 
-            PreparedStatement.executeUpdate();
-ef
         } catch (SQLException e) {
-            log("Error", e.getMessage());
+            log("ERROR", e.getMessage());
         }
 
-        log("INFO", "Successfully persisted new reimbursement with reimb_id: " + reimbursements.getReimb_id());
-
-        return reimbursements.getReimb_id();
-
-    }
-
-    private  List<Reimbursements> mapResultSet(ResultSet resultSet) throws  SQLException {
+            log("INFO", "Successfully persisted new reimbursement with reimbursement ID: " + reimbursements.getReimb_id());
+            return reimbursements.getReimb_id();
+        }
+        private  List<Reimbursements> mapResultSet(ResultSet resultSet) throws  SQLException {
         List<Reimbursements> reimbursements = new ArrayList<>();
-        while (resultSet.next()) {
-            Reimbursements reimbursements1 = new Reimbursements();
-            reimbursements1.setReimb_id(resultSet.getString("reimb_id"));
-            reimbursements1.setAmount(resultSet.getInt("amount"));
-            reimbursements1.setSubmitted(resultSet.getTimestamp("submitted"));
-            reimbursements1.setResolved(resultSet.getTimestamp("resolved"));
-            reimbursements1.setDescription(resultSet.getString("description"));
-            reimbursements1.setReceipt((Oid) resultSet.getBlob("receipt"));
-            reimbursements1.setPayment_id(resultSet.getString("payment_id"));
-            reimbursements1.setAuthor_id(resultSet.getString("author_id"));
-            reimbursements1.setResolver_id(resultSet.getString("resolver_id"));
-            reimbursements1.setStatus_id(resultSet.getString("status_id"));
-            reimbursements1.setType_id(resultSet.getString("type_id"));
+            while (resultSet.next()) {
+                Reimbursements reimbursements1 = new Reimbursements();
+                reimbursements1.setReimb_id(resultSet.getString("reimb_id"));
+                reimbursements1.setAmount(resultSet.getInt("amount"));
+                reimbursements1.setSubmitted(resultSet.getTimestamp("submitted"));
+                reimbursements1.setResolved(resultSet.getTimestamp("resolved"));
+                reimbursements1.setDescription(resultSet.getString("description"));
+                reimbursements1.setReceipt((Oid) resultSet.getBlob("receipt"));
+                reimbursements1.setPayment_id(resultSet.getString("payment_id"));
+                reimbursements1.setAuthor_id(resultSet.getString("author_id"));
+                reimbursements1.setResolver_id(resultSet.getString("resolver_id"));
+                reimbursements1.setStatus_id(resultSet.getString("status_id"));
+                reimbursements1.setType_id(resultSet.getString("type_id"));
 
-        }
+            }
 
         return reimbursements;
 

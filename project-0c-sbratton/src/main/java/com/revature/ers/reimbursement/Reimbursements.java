@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Reimbursements {
 
-    private  String reimb_id;
+    private String reimb_id;
     private Integer amount;
     private Timestamp submitted;
     private Timestamp resolved;

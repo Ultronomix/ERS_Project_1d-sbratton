@@ -2,6 +2,9 @@ package com.revature.ers;
 
 import com.revature.ers.auth.AuthService;
 import com.revature.ers.auth.AuthServlet;
+import com.revature.ers.reimbursement.RembDAO;
+import com.revature.ers.reimbursement.RembService;
+import com.revature.ers.reimbursement.RembServlet;
 import com.revature.ers.users.UserDAO;
 import com.revature.ers.users.UserService;
 import com.revature.ers.users.UserServlet;
@@ -27,17 +30,21 @@ public class ErsApp {
 
         // ErsApp component instantiation
         UserDAO userDAO = new UserDAO();
+        RembDAO rembDAO = new RembDAO();
         AuthService authService = new AuthService(userDAO);
         UserService userService = new UserService(userDAO);
         UserServlet userServlet = new UserServlet(userService);
         AuthServlet authServlet = new AuthServlet(authService);
+        RembService rembService = new RembService(rembDAO);
+        RembServlet rembServlet = new RembServlet(rembService);
+
 
         // Web server context and servlet Configurations
         final String rootContext = "/ers";
         webServer.addContext(rootContext, docBase);
         webServer.addServlet(rootContext,"UserServlet", userServlet).addMapping("/users");
         webServer.addServlet(rootContext,"AuthServlet", authServlet).addMapping("/auth");
-        /*webServer.addServlet(rootContext, "ReimbursementServlet", rembServlet).addMapping("/reimbursement");*/
+        webServer.addServlet(rootContext, "RembServlet", rembServlet).addMapping("/remb");
 
         // Starting and awaiting web request
         webServer.start();
