@@ -50,19 +50,19 @@ public class UserServlet extends HttpServlet {
             String idToSearchFor = req.getParameter("id");
             UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
 
-            System.out.println("request is admin: " + requesterIsAdmin(requester));
-            System.out.println("requester owns requested resource: " + requesterOwned(idToSearchFor, requester.getUser_id()));
+//            System.out.println("request is admin: " + requesterIsAdmin(requester));
+//            System.out.println("requester owns requested resource: " + requesterOwned(idToSearchFor, requester.getUser_id()));
 
-            if (!requesterIsAdmin(requester) && !requesterOwned(idToSearchFor, requester.getUser_id())) {
+            /*if (!requesterIsAdmin(requester) && !requesterOwned(idToSearchFor, requester.getUser_id())) {
                 resp.setStatus(403); // Forbidden the system recognizes the user, but they don't have permission to be here
-                resp.getWriter().write(jsonMapper.writeValueAsString(
-                        /*errorResponse*/new ErrorResponse(403,
+                resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(403,
                                 "Requester is not Permitted to communicate with this endpoint.")));
                 return;
-            }
+            }*/
 
             if (idToSearchFor == null) {
                 List<UserResponse> allUsers = userService.getAllUsers();
+                resp.addHeader("X-My-Custom-Header", "some-random-value");
                 resp.getWriter().write(jsonMapper.writeValueAsString(allUsers));
             } else {
                 UserResponse foundUser = userService.getUserById(idToSearchFor);
@@ -71,7 +71,7 @@ public class UserServlet extends HttpServlet {
 
         } catch (InvalidRequestException | JsonMappingException e) {
             resp.setStatus(400); // Bad request
-            resp.getWriter().write(jsonMapper.writeValueAsString(/*errorResponse*/new ErrorResponse(400, e.getMessage())));
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(400, e.getMessage())));
 
         } catch (ResourceNotFoundException e) {
 
@@ -81,7 +81,7 @@ public class UserServlet extends HttpServlet {
         } catch (DataSourceException e) {
 
             resp.setStatus(500); // Internal server error: Typically sent back when login fails or if a protected endpoint is hit by unauthorized user
-            resp.getWriter().write(jsonMapper.writeValueAsString(/*errorResponse*/new ErrorResponse(500, e.getMessage())));
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(500, e.getMessage())));
         }
     }
     //
@@ -111,12 +111,12 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    public boolean requesterIsAdmin(UserResponse requester) {
+    /*public boolean requesterIsAdmin(UserResponse requester) {
         return requester.getEmail().equals("bar123@revature.com");
     }
 
     public boolean requesterOwned(String resourceId, String requesterId) {
         if (resourceId == null) return false;
         return requesterId.equals(resourceId);
-    }
+    }*/
 }

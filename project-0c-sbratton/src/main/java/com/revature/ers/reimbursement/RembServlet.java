@@ -8,7 +8,6 @@ import com.revature.ers.common.datasource.exceptions.DataSourceException;
 import com.revature.ers.common.datasource.exceptions.InvalidRequestException;
 import com.revature.ers.common.datasource.exceptions.ResourceNotFoundException;
 import com.revature.ers.common.datasource.exceptions.ResourcePersistenceException;
-import com.revature.ers.users.NewUserRequest;
 import com.revature.ers.users.UserResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;

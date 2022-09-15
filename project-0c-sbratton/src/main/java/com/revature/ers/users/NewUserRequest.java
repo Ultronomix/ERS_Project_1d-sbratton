@@ -1,17 +1,36 @@
 package com.revature.ers.users;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.revature.ers.common.Request;
 
 import java.util.Objects;
 
-public abstract class NewUserRequest implements Request<User> {
+public class NewUserRequest implements Request<User> {
 
     private String username;
+    @JsonProperty("username")
     private String email;
+    @JsonProperty("email")
     private String password;
+    @JsonProperty("password")
     private String given_name;
+    @JsonProperty("given_name")
     private String surname;
+    @JsonProperty("surname")
     private String is_active;
+
+    public NewUserRequest(String username, String email, String password, String given_name, String surname, String is_active) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.given_name = given_name;
+        this.surname = surname;
+        this.is_active = is_active;
+    }
+
+    @JsonProperty("is_active")
+
+
 
     public String getUsername() {
         return username;
@@ -66,7 +85,9 @@ public abstract class NewUserRequest implements Request<User> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NewUserRequest that = (NewUserRequest) o;
-        return Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(given_name, that.given_name) && Objects.equals(surname, that.surname) && Objects.equals(is_active, that.is_active);
+        return Objects.equals(username, that.username) && Objects.equals(email, that.email)
+                && Objects.equals(password, that.password) && Objects.equals(given_name, that.given_name)
+                && Objects.equals(surname, that.surname) && Objects.equals(is_active, that.is_active);
     }
 
     @Override
@@ -86,4 +107,16 @@ public abstract class NewUserRequest implements Request<User> {
                 '}';
     }
 
+    @Override
+    public User extractEntity() {
+        User extractEntity = new User();
+        extractEntity.setUsername(this.username);
+        extractEntity.setEmail(this.email);
+        extractEntity.setPassword(this.password);
+        extractEntity.setGiven_name(this.given_name);
+        extractEntity.setSurname(this.surname);
+        extractEntity.setIs_active(this.is_active.isEmpty());
+        return extractEntity;
+
+    }
 }

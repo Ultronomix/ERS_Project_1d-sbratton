@@ -143,6 +143,11 @@ public class UserDAO {
                 "(username, email, password, given_name, surname, is_active, role_id)" +
                     "VALUES(?, ?, ?, ?, ?, ?, false, ?)";
 
+        /* INSERT INTO ers.ers_users
+            (username, email, "password", given_name, surname, is_active, role_id)
+            VALUES('', '', '', '', '', '', false, '');
+             */
+
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
 
