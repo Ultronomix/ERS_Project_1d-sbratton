@@ -139,9 +139,7 @@ public class UserDAO {
 
     public String save(User user) {
 
-        String sql = "INSERT INTO ers.ers_users" +
-                "(username, email, password, given_name, surname, is_active, role_id)" +
-                    "VALUES(?, ?, ?, ?, ?, ?, false, ?)";
+        String sql = "INSERT INTO ers.ers_users(User_id, username, email, password, given_name, surname, is_active, role_id)VALUES(?, ?, ?, ?, ?, ?, false, ?)";
 
         /* INSERT INTO ers.ers_users
             (username, email, "password", given_name, surname, is_active, role_id)

@@ -83,7 +83,7 @@ public class RembDAO {
 
         String sql = "INSERT INTO ers.ers_reimbursements " +
                 "(reimb_id, amount, submitted, resolved, description, author_id, resolver_id, status_id, type_id) " +
-                "VALUES (?, 0, ?, ?, ?, 0, ?, ?, ?, ?)";
+                "VALUES (?, 0, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
 
@@ -113,7 +113,7 @@ public class RembDAO {
                 reimbursements1.setSubmitted(resultSet.getTimestamp("submitted"));
                 reimbursements1.setResolved(resultSet.getTimestamp("resolved"));
                 reimbursements1.setDescription(resultSet.getString("description"));
-                reimbursements1.setReceipt((Oid) resultSet.getBlob("receipt"));
+                //reimbursements1.setReceipt((Oid) resultSet.getBlob("receipt"));
                 reimbursements1.setPayment_id(resultSet.getString("payment_id"));
                 reimbursements1.setAuthor_id(resultSet.getString("author_id"));
                 reimbursements1.setResolver_id(resultSet.getString("resolver_id"));

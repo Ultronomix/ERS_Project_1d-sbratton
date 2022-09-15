@@ -109,7 +109,7 @@ public class RembServlet extends HttpServlet {
     }
 
     private boolean requesterIsAdmin(UserResponse requester) {
-        return requester.getUser_id().equals("00050");
+        return requester.getUser_id().equals("sha234@revature.com");
     }
 
     private boolean requesterOwned(String resourceId, String requesterId) {

@@ -7,30 +7,24 @@ import java.util.Objects;
 
 public class NewUserRequest implements Request<User> {
 
+    private String user_id;
     private String username;
-    @JsonProperty("username")
     private String email;
-    @JsonProperty("email")
     private String password;
-    @JsonProperty("password")
     private String given_name;
-    @JsonProperty("given_name")
     private String surname;
-    @JsonProperty("surname")
-    private String is_active;
 
-    public NewUserRequest(String username, String email, String password, String given_name, String surname, String is_active) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.given_name = given_name;
-        this.surname = surname;
-        this.is_active = is_active;
+    private boolean is_active;
+
+    private String role_id;
+
+    public String getUser_id() {
+        return user_id;
     }
 
-    @JsonProperty("is_active")
-
-
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 
     public String getUsername() {
         return username;
@@ -72,12 +66,20 @@ public class NewUserRequest implements Request<User> {
         this.surname = surname;
     }
 
-    public String getIs_active() {
+    public boolean isIs_active() {
         return is_active;
     }
 
-    public void setIs_active(String is_active) {
+    public void setIs_active(boolean is_active) {
         this.is_active = is_active;
+    }
+
+    public String getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(String role_id) {
+        this.role_id = role_id;
     }
 
     @Override
@@ -85,38 +87,42 @@ public class NewUserRequest implements Request<User> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NewUserRequest that = (NewUserRequest) o;
-        return Objects.equals(username, that.username) && Objects.equals(email, that.email)
-                && Objects.equals(password, that.password) && Objects.equals(given_name, that.given_name)
-                && Objects.equals(surname, that.surname) && Objects.equals(is_active, that.is_active);
+        return is_active == that.is_active && Objects.equals(user_id, that.user_id) && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(given_name, that.given_name) && Objects.equals(surname, that.surname) && Objects.equals(role_id, that.role_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, email, password, given_name, surname, is_active);
+        return Objects.hash(user_id, username, email, password, given_name, surname, is_active, role_id);
     }
 
     @Override
     public String toString() {
         return "NewUserRequest{" +
-                "username='" + username + '\'' +
+                "user_id='" + user_id + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", given_name='" + given_name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", is_active='" + is_active + '\'' +
+                ", is_active=" + is_active +
+                ", role_id='" + role_id + '\'' +
                 '}';
     }
 
     @Override
     public User extractEntity() {
         User extractEntity = new User();
+        extractEntity.setUser_id(this.user_id);
         extractEntity.setUsername(this.username);
         extractEntity.setEmail(this.email);
         extractEntity.setPassword(this.password);
         extractEntity.setGiven_name(this.given_name);
         extractEntity.setSurname(this.surname);
-        extractEntity.setIs_active(this.is_active.isEmpty());
+        extractEntity.setIs_active(this.is_active);
+        extractEntity.setRole_id(this.role_id);
         return extractEntity;
 
     }
+
+
 }
