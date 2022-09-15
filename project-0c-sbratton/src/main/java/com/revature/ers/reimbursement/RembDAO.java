@@ -2,7 +2,6 @@ package com.revature.ers.reimbursement;
 
 import com.revature.ers.common.datasource.ConnectionFactory;
 import com.revature.ers.common.datasource.exceptions.DataSourceException;
-import org.postgresql.core.Oid;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,11 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static jdk.nashorn.internal.objects.NativeMath.log;
-
 public class RembDAO {
 
-    private final String baseSelect = "SELECT reimb_id, amount, submitted, resolved, description, receipt, payment_id " +
+    private final String baseSelect = "SELECT reimb_id, amount, submitted, resolved, description, receipt, payment_id, " +
             "author_id, resolver_id, status_id, type_id " +
             "FROM ers.ers_reimbursements ";
     //private List<Reimbursements> allReimbursements;
@@ -27,9 +24,8 @@ public class RembDAO {
 
         List<Reimbursements> allReimbursements = new ArrayList<>();
 
-        try {
-            //assert ConnectionFactory.getInstance() != null;
-            try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
+
+        try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
 
                 // JDBC Statement objects are subject to SQL Injections
                 Statement statement = connection.createStatement();
@@ -37,13 +33,14 @@ public class RembDAO {
 
                 allReimbursements = mapResultSet(resultSet);
 
-            }
         } catch (SQLException e) {
             System.err.println("Something went wrong when communicating with the database!");
             e.printStackTrace();
         }
 
-            return allReimbursements;
+        System.out.println("Reimbursements in DAO: " + allReimbursements);
+
+        return allReimbursements;
 
     }
 
@@ -107,19 +104,19 @@ public class RembDAO {
         private  List<Reimbursements> mapResultSet(ResultSet resultSet) throws  SQLException {
         List<Reimbursements> reimbursements = new ArrayList<>();
             while (resultSet.next()) {
-                Reimbursements reimbursements1 = new Reimbursements();
-                reimbursements1.setReimb_id(resultSet.getString("reimb_id"));
-                reimbursements1.setAmount(resultSet.getInt("amount"));
-                reimbursements1.setSubmitted(resultSet.getTimestamp("submitted"));
-                reimbursements1.setResolved(resultSet.getTimestamp("resolved"));
-                reimbursements1.setDescription(resultSet.getString("description"));
-                //reimbursements1.setReceipt((Oid) resultSet.getBlob("receipt"));
-                reimbursements1.setPayment_id(resultSet.getString("payment_id"));
-                reimbursements1.setAuthor_id(resultSet.getString("author_id"));
-                reimbursements1.setResolver_id(resultSet.getString("resolver_id"));
-                reimbursements1.setStatus_id(resultSet.getString("status_id"));
-                reimbursements1.setType_id(resultSet.getString("type_id"));
-
+                Reimbursements reimbursement = new Reimbursements();
+                reimbursement.setReimb_id(resultSet.getString("reimb_id"));
+                reimbursement.setAmount(resultSet.getInt("amount"));
+                reimbursement.setSubmitted(resultSet.getTimestamp("submitted"));
+                reimbursement.setResolved(resultSet.getTimestamp("resolved"));
+                reimbursement.setDescription(resultSet.getString("description"));
+                //reimbursement.setReceipt((Oid) resultSet.getBlob("receipt"));
+                reimbursement.setPayment_id(resultSet.getString("payment_id"));
+                reimbursement.setAuthor_id(resultSet.getString("author_id"));
+                reimbursement.setResolver_id(resultSet.getString("resolver_id"));
+                reimbursement.setStatus_id(resultSet.getString("status_id"));
+                reimbursement.setType_id(resultSet.getString("type_id"));
+                reimbursements.add(reimbursement);
             }
 
         return reimbursements;

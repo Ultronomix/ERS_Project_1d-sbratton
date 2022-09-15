@@ -59,8 +59,9 @@ public class RembServlet extends HttpServlet {
 //            }
 
             if (idToSearchFor == null) {
-                List<RembResponse> allUsers = rembService.getAllReimbursements();
-                resp.getWriter().write(jsonMapper.writeValueAsString(allUsers));
+                List<RembResponse> allReimbs = rembService.getAllReimbursements();
+                System.out.println("Reimbusrements in Servlet: " + allReimbs);
+                resp.getWriter().write(jsonMapper.writeValueAsString(allReimbs));
             } else {
                 RembResponse foundUser = rembService.getReimbursementById(idToSearchFor);
                 resp.getWriter().write(jsonMapper.writeValueAsString(foundUser));

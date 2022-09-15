@@ -139,7 +139,7 @@ public class UserDAO {
 
     public String save(User user) {
 
-        String sql = "INSERT INTO ers.ers_users(User_id, username, email, password, given_name, surname, is_active, role_id)VALUES(?, ?, ?, ?, ?, ?, false, ?)";
+        String sql = "INSERT INTO ers.ers_users(User_id, username, email, password, given_name, surname, is_active, role_id)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
         /* INSERT INTO ers.ers_users
             (username, email, "password", given_name, surname, is_active, role_id)
@@ -148,22 +148,17 @@ public class UserDAO {
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
-
-
-            PreparedStatement preparedStatement = conn.prepareStatement(sql, new String[]{"user_id"});
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getPassword());
-            preparedStatement.setString(4, user.getGiven_name());
-            preparedStatement.setString(5, user.getSurname());
-            preparedStatement.setBoolean(6, user.getIs_active());
-            preparedStatement.setString(7, user.getRole_id());
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, user.getUser_id());
+            preparedStatement.setString(2, user.getUsername());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(5, user.getGiven_name());
+            preparedStatement.setString(6, user.getSurname());
+            preparedStatement.setBoolean(7, user.getIs_active());
+            preparedStatement.setString(8, user.getRole_id());
 
             preparedStatement.executeUpdate();
-
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            resultSet.next();
-            user.setUser_id(resultSet.getString("user_id"));
 
         } catch (SQLException e) {
             log("Error", e.getMessage());

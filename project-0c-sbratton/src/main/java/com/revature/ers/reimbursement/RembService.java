@@ -17,10 +17,14 @@ public class RembService {
 
     public List<RembResponse> getAllReimbursements() {
 
-        return rembDAO.getAllReimbursements()
+        List<RembResponse> responses =  rembDAO.getAllReimbursements()
                 .stream()
                 .map(RembResponse::new)
                 .collect(Collectors.toList());
+
+        System.out.println("Reimbursements in Service: " + responses);
+
+        return responses;
     }
 
     public RembResponse getReimbursementById(String idStr) {
