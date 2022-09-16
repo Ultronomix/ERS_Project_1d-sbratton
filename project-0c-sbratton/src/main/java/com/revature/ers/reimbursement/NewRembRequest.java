@@ -1,10 +1,8 @@
 package com.revature.ers.reimbursement;
 
 import com.revature.ers.common.Request;
-import org.postgresql.core.Oid;
 
 import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.UUID;
 
 public class NewRembRequest implements Request<Reimbursements> {
@@ -15,6 +13,7 @@ public class NewRembRequest implements Request<Reimbursements> {
     private Timestamp resolved;
     private String description;
     private String author_id;
+    private String resolver_id;
     private String status_id;
     private String type_id;
 
@@ -66,6 +65,14 @@ public class NewRembRequest implements Request<Reimbursements> {
         this.author_id = author_id;
     }
 
+    public String getResolver_id() {
+        return resolver_id;
+    }
+
+    public void setResolver_id(String resolver_id) {
+        this.resolver_id = resolver_id;
+    }
+
     public String getStatus_id() {
         return status_id;
     }
@@ -91,6 +98,7 @@ public class NewRembRequest implements Request<Reimbursements> {
                 ", resolved=" + resolved +
                 ", description='" + description + '\'' +
                 ", author_id='" + author_id + '\'' +
+                ", resolver_id='" + resolver_id + '\'' +
                 ", status_id='" + status_id + '\'' +
                 ", type_id='" + type_id + '\'' +
                 '}';
@@ -105,6 +113,7 @@ public class NewRembRequest implements Request<Reimbursements> {
         extractEntity.setResolved(this.resolved);
         extractEntity.setDescription(this.description);
         extractEntity.setAuthor_id(this.author_id);
+        extractEntity.setResolver_id(this.resolver_id);
         extractEntity.setStatus_id(this.status_id);
         extractEntity.setType_id(this.type_id);
         return extractEntity;

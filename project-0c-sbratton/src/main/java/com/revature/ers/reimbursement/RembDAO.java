@@ -113,7 +113,7 @@ public class RembDAO {
                 reimbursement.setSubmitted(resultSet.getTimestamp("submitted"));
                 reimbursement.setResolved(resultSet.getTimestamp("resolved"));
                 reimbursement.setDescription(resultSet.getString("description"));
-                reimbursement.setPayment_id(resultSet.getString("payment_id"));
+                //reimbursement.setPayment_id(resultSet.getString("payment_id"));
                 reimbursement.setAuthor_id(resultSet.getString("author_id"));
                 reimbursement.setResolver_id(resultSet.getString("resolver_id"));
                 reimbursement.setStatus_id(resultSet.getString("status_id"));
