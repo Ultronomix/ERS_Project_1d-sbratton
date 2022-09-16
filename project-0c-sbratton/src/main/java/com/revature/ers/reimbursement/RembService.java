@@ -4,10 +4,6 @@ import com.revature.ers.common.AppUtils;
 import com.revature.ers.common.ResourceCreationResponse;
 import com.revature.ers.common.datasource.exceptions.InvalidRequestException;
 import com.revature.ers.common.datasource.exceptions.ResourceNotFoundException;
-import com.revature.ers.common.datasource.exceptions.ResourcePersistenceException;
-import com.revature.ers.users.NewUserRequest;
-import com.revature.ers.users.User;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,13 +53,13 @@ public class RembService {
 
     }
 
-    public ResourceCreationResponse register(NewRembRequest newRembRequest) {
+    public ResourceCreationResponse createNewReimbursement(NewRembRequest newRembRequest) {
 
         if (newRembRequest == null) {
             throw new InvalidRequestException("Provided request was empty");
         }
 
-        if (newRembRequest.getAmount() == null || newRembRequest.getAmount() <= 0) {
+        if (newRembRequest.getAmount() <= 0) {
             throw new InvalidRequestException("A non-empty Amount must be provided");
         }
 
@@ -71,7 +67,7 @@ public class RembService {
             throw new InvalidRequestException("A non-empty Description must be provided");
         }
 
-        if (newRembRequest.getAuthor_id() == null || newRembRequest.getAuthor_id().length() <= 0) {
+        if (newRembRequest.getAuthor_id() == null || newRembRequest.getAuthor_id().length() == 0) {
             throw new InvalidRequestException("Your User_Id must be provided");
         }
 

@@ -80,13 +80,13 @@ public class RembDAO {
 
         String sql = "INSERT INTO ers.ers_reimbursements " +
                 "(reimb_id, amount, submitted, resolved, description, author_id, resolver_id, status_id, type_id) " +
-                "VALUES (?, 0, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, reimbursements.getReimb_id());
-            pstmt.setInt(2, reimbursements.getAmount());
+            pstmt.setDouble(2, reimbursements.getAmount());
             pstmt.setTimestamp(3, reimbursements.getSubmitted());
             pstmt.setTimestamp(4, reimbursements.getResolved());
             pstmt.setString(5, reimbursements.getDescription());
@@ -99,6 +99,7 @@ public class RembDAO {
 
         } catch (SQLException e) {
             log("ERROR", e.getMessage());
+            throw new DataSourceException(e);
         }
 
             log("INFO", "Successfully persisted new reimbursement with reimbursement ID: " + reimbursements.getReimb_id());

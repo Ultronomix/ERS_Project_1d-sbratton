@@ -9,7 +9,7 @@ import java.util.Objects;
 public class RembResponse implements Serializable {
 
     private  String reimb_id;
-    private Integer amount;
+    private double amount;
     private Timestamp submitted;
     private Timestamp resolved;
     private String description;
@@ -42,11 +42,11 @@ public class RembResponse implements Serializable {
         this.reimb_id = reimb_id;
     }
 
-    public Integer getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

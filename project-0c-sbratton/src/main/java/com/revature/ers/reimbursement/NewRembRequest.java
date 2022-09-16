@@ -3,50 +3,22 @@ package com.revature.ers.reimbursement;
 import com.revature.ers.common.Request;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class NewRembRequest implements Request<Reimbursements> {
 
-    private String reimb_id;
-    private Integer amount;
-    private Timestamp submitted;
-    private Timestamp resolved;
+    private double amount;
     private String description;
     private String author_id;
-    private String resolver_id;
-    private String status_id;
     private String type_id;
 
-    public String getReimb_id() {
-        return reimb_id;
-    }
-
-    public void setReimb_id(String reimb_id) {
-        this.reimb_id = reimb_id;
-    }
-
-    public Integer getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
-    }
-
-    public Timestamp getSubmitted() {
-        return submitted;
-    }
-
-    public void setSubmitted(Timestamp submitted) {
-        this.submitted = submitted;
-    }
-
-    public Timestamp getResolved() {
-        return resolved;
-    }
-
-    public void setResolved(Timestamp resolved) {
-        this.resolved = resolved;
     }
 
     public String getDescription() {
@@ -65,22 +37,6 @@ public class NewRembRequest implements Request<Reimbursements> {
         this.author_id = author_id;
     }
 
-    public String getResolver_id() {
-        return resolver_id;
-    }
-
-    public void setResolver_id(String resolver_id) {
-        this.resolver_id = resolver_id;
-    }
-
-    public String getStatus_id() {
-        return status_id;
-    }
-
-    public void setStatus_id(String status_id) {
-        this.status_id = status_id;
-    }
-
     public String getType_id() {
         return type_id;
     }
@@ -92,14 +48,9 @@ public class NewRembRequest implements Request<Reimbursements> {
     @Override
     public String toString() {
         return "NewRembRequest{" +
-                "reimb_id='" + reimb_id + '\'' +
-                ", amount=" + amount +
-                ", submitted=" + submitted +
-                ", resolved=" + resolved +
+                "amount=" + amount +
                 ", description='" + description + '\'' +
                 ", author_id='" + author_id + '\'' +
-                ", resolver_id='" + resolver_id + '\'' +
-                ", status_id='" + status_id + '\'' +
                 ", type_id='" + type_id + '\'' +
                 '}';
     }
@@ -109,12 +60,10 @@ public class NewRembRequest implements Request<Reimbursements> {
         Reimbursements extractEntity = new Reimbursements();
         extractEntity.setReimb_id(UUID.randomUUID().toString());
         extractEntity.setAmount(this.amount);
-        extractEntity.setSubmitted(this.submitted);
-        extractEntity.setResolved(this.resolved);
+        extractEntity.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
         extractEntity.setDescription(this.description);
         extractEntity.setAuthor_id(this.author_id);
-        extractEntity.setResolver_id(this.resolver_id);
-        extractEntity.setStatus_id(this.status_id);
+        extractEntity.setStatus_id("2");
         extractEntity.setType_id(this.type_id);
         return extractEntity;
     }

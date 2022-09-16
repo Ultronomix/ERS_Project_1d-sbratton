@@ -80,10 +80,21 @@ public class RembServlet extends HttpServlet {
         ObjectMapper jsonMapper = new ObjectMapper();
         resp.setContentType("application/json");
 
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            resp.setStatus(401);
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(401,
+                    "Requester is not authenticated with the system, please login.")));
+            return;
+        }
+
         try {
             NewRembRequest requestBody = jsonMapper.readValue(req.getInputStream(), NewRembRequest.class);
-            ResourceCreationResponse responseBody;
-            responseBody = rembService.register(requestBody);
+
+            UserResponse requester = (UserResponse) session.getAttribute("authUser");
+            requestBody.setAuthor_id(requester.getUser_id());
+
+            ResourceCreationResponse responseBody = rembService.createNewReimbursement(requestBody);
             resp.getWriter().write(jsonMapper.writeValueAsString(responseBody));
         } catch (InvalidRequestException | JsonMappingException e) {
             resp.setStatus(400); // Bad request
