@@ -22,7 +22,7 @@ public class UserDAO {
 
         List<User> allUsers = new ArrayList<>();
 
-        try {
+
             //assert ConnectionFactory.getInstance() != null;
             try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
 
@@ -33,7 +33,7 @@ public class UserDAO {
                 allUsers = mapResultSet(resultSet);
 
             }
-        } catch (SQLException e) {
+         catch (SQLException e) {
             System.err.println("Something went wrong when communicating with the database!");
             e.printStackTrace();
         }
@@ -141,10 +141,6 @@ public class UserDAO {
 
         String sql = "INSERT INTO ers.ers_users(User_id, username, email, password, given_name, surname, is_active, role_id)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
-        /* INSERT INTO ers.ers_users
-            (username, email, "password", given_name, surname, is_active, role_id)
-            VALUES('', '', '', '', '', '', false, '');
-             */
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 

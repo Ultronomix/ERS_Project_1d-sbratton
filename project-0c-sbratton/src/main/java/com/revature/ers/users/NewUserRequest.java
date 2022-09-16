@@ -7,8 +7,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class NewUserRequest implements Request<User> {
-
-    //private String user_id;
     private String username;
     private String email;
     private String password;
@@ -18,14 +16,6 @@ public class NewUserRequest implements Request<User> {
     private boolean is_active;
 
     private String role_id;
-
-    /*public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }*/
 
     public String getUsername() {
         return username;
@@ -82,19 +72,6 @@ public class NewUserRequest implements Request<User> {
     public void setRole_id(String role_id) {
         this.role_id = role_id;
     }
-
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        NewUserRequest that = (NewUserRequest) o;
-        return is_active == that.is_active && Objects.equals(user_id, that.user_id) && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(given_name, that.given_name) && Objects.equals(surname, that.surname) && Objects.equals(role_id, that.role_id);
-    }*/
-
-    /*@Override
-    public int hashCode() {
-        return Objects.hash(user_id, username, email, password, given_name, surname, is_active, role_id);
-    }*/
 
     @Override
     public String toString() {
