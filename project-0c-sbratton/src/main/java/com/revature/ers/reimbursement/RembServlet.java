@@ -8,7 +8,6 @@ import com.revature.ers.common.datasource.exceptions.DataSourceException;
 import com.revature.ers.common.datasource.exceptions.InvalidRequestException;
 import com.revature.ers.common.datasource.exceptions.ResourceNotFoundException;
 import com.revature.ers.common.datasource.exceptions.ResourcePersistenceException;
-import com.revature.ers.users.NewUserRequest;
 import com.revature.ers.users.UserResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -47,7 +46,10 @@ public class RembServlet extends HttpServlet {
         try {
 
             String idToSearchFor = req.getParameter("id");
-            RembResponse requester = (RembResponse) userSession.getAttribute("authUser");
+            UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
+
+            System.out.println("Request is admin: " + requesterIsAdmin(requester));
+            System.out.println("Requester owns requested resource: " + requesterOwned(idToSearchFor, requester.getUser_id()));
 
             if (idToSearchFor == null) {
                 List<RembResponse> allReimbs = rembService.getAllReimbursements();
@@ -97,6 +99,15 @@ public class RembServlet extends HttpServlet {
             resp.setStatus(500); // Internal server error: Typically sent back when login fails or if a protected endpoint is hit by unauthorized user
             resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(500, e.getMessage())));
         }
+    }
+
+    private boolean requesterIsAdmin(UserResponse requester) {
+        return requester.getUser_id().equals("sha234@revature.com");
+    }
+
+    private boolean requesterOwned(String resourceId, String requesterId) {
+        if (resourceId == null) return false;
+        return requesterId.equals(resourceId);
     }
 
 }

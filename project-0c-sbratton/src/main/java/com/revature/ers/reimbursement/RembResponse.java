@@ -151,4 +151,6 @@ public class RembResponse implements Serializable {
                 ", type_id='" + type_id + '\'' +
                 '}';
     }
+
+
 }
