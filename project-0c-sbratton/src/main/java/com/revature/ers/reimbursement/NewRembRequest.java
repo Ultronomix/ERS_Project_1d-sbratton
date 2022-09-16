@@ -12,6 +12,7 @@ public class NewRembRequest implements Request<Reimbursements> {
     private String reimb_id;
     private Integer amount;
     private Timestamp submitted;
+    private Timestamp resolved;
     private String description;
     private String author_id;
     private String status_id;
@@ -39,6 +40,14 @@ public class NewRembRequest implements Request<Reimbursements> {
 
     public void setSubmitted(Timestamp submitted) {
         this.submitted = submitted;
+    }
+
+    public Timestamp getResolved() {
+        return resolved;
+    }
+
+    public void setResolved(Timestamp resolved) {
+        this.resolved = resolved;
     }
 
     public String getDescription() {
@@ -79,6 +88,7 @@ public class NewRembRequest implements Request<Reimbursements> {
                 "reimb_id='" + reimb_id + '\'' +
                 ", amount=" + amount +
                 ", submitted=" + submitted +
+                ", resolved=" + resolved +
                 ", description='" + description + '\'' +
                 ", author_id='" + author_id + '\'' +
                 ", status_id='" + status_id + '\'' +
@@ -89,9 +99,10 @@ public class NewRembRequest implements Request<Reimbursements> {
     @Override
     public Reimbursements extractEntity() {
         Reimbursements extractEntity = new Reimbursements();
-        extractEntity.setReimb_id(this.reimb_id);
+        extractEntity.setReimb_id(UUID.randomUUID().toString());
         extractEntity.setAmount(this.amount);
         extractEntity.setSubmitted(this.submitted);
+        extractEntity.setResolved(this.resolved);
         extractEntity.setDescription(this.description);
         extractEntity.setAuthor_id(this.author_id);
         extractEntity.setStatus_id(this.status_id);

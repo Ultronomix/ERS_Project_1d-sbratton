@@ -12,9 +12,7 @@ public class NewUserRequest implements Request<User> {
     private String password;
     private String given_name;
     private String surname;
-
     private boolean is_active;
-
     private String role_id;
 
     public String getUsername() {
