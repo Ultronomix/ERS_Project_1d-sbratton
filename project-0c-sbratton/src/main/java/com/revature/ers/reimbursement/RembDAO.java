@@ -79,8 +79,8 @@ public class RembDAO {
         public String save(Reimbursements reimbursements) {
 
         String sql = "INSERT INTO ers.ers_reimbursements " +
-                "(reimb_id, amount, submitted, resolved, description, author_id, resolver_id, status_id, type_id) " +
-                "VALUES (?, 0, ?, ?, ?, ?, ?, ?, ?)";
+                "(reimb_id, amount, submitted, description, author_id, status_id, type_id) " +
+                "VALUES (?, 0, ?, ?, ?, ?)";
 
         try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
 
@@ -88,11 +88,10 @@ public class RembDAO {
             pstmt.setString(1, reimbursements.getReimb_id());
             pstmt.setInt(2, reimbursements.getAmount());
             pstmt.setTimestamp(3, reimbursements.getSubmitted());
-            pstmt.setString(1, reimbursements.getDescription());
-            pstmt.setString(1, reimbursements.getAuthor_id());
-            pstmt.setString(1, reimbursements.getResolver_id());
-            pstmt.setString(1, reimbursements.getStatus_id());
-            pstmt.setString(1, reimbursements.getType_id());
+            pstmt.setString(4, reimbursements.getDescription());
+            pstmt.setString(5, reimbursements.getAuthor_id());
+            pstmt.setString(6, reimbursements.getStatus_id());
+            pstmt.setString(6, reimbursements.getType_id());
 
             pstmt.executeUpdate();
 

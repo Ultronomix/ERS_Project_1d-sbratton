@@ -89,7 +89,7 @@ public class NewRembRequest implements Request<Reimbursements> {
     @Override
     public Reimbursements extractEntity() {
         Reimbursements extractEntity = new Reimbursements();
-        extractEntity.setReimb_id(UUID.randomUUID().toString());
+        extractEntity.setReimb_id(this.reimb_id);
         extractEntity.setAmount(this.amount);
         extractEntity.setSubmitted(this.submitted);
         extractEntity.setDescription(this.description);
