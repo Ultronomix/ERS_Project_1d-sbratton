@@ -84,15 +84,17 @@ public class RembDAO {
 
         try (Connection connection = ConnectionFactory.getInstance().getConnection()) {
 
-            PreparedStatement pstmt = connection.prepareStatement(sql, new String[] {"reimb_id"});
-            pstmt.setInt(1, reimbursements.getAmount());
-            pstmt.setTimestamp(2, reimbursements.getSubmitted());
-            pstmt.setTimestamp(3, reimbursements.getResolved());
-            pstmt.setString(4, reimbursements.getDescription());
-            pstmt.setString(5, reimbursements.getAuthor_id());
-            pstmt.setString(6, reimbursements.getResolver_id());
-            pstmt.setString(7, reimbursements.getStatus_id());
-            pstmt.setString(8, reimbursements.getType_id());
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, reimbursements.getReimb_id());
+            pstmt.setInt(2, reimbursements.getAmount());
+            pstmt.setTimestamp(3, reimbursements.getSubmitted());
+            pstmt.setString(1, reimbursements.getDescription());
+            pstmt.setString(1, reimbursements.getAuthor_id());
+            pstmt.setString(1, reimbursements.getResolver_id());
+            pstmt.setString(1, reimbursements.getStatus_id());
+            pstmt.setString(1, reimbursements.getType_id());
+
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             log("ERROR", e.getMessage());
@@ -110,7 +112,6 @@ public class RembDAO {
                 reimbursement.setSubmitted(resultSet.getTimestamp("submitted"));
                 reimbursement.setResolved(resultSet.getTimestamp("resolved"));
                 reimbursement.setDescription(resultSet.getString("description"));
-                //reimbursement.setReceipt((Oid) resultSet.getBlob("receipt"));
                 reimbursement.setPayment_id(resultSet.getString("payment_id"));
                 reimbursement.setAuthor_id(resultSet.getString("author_id"));
                 reimbursement.setResolver_id(resultSet.getString("resolver_id"));

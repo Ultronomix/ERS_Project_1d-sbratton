@@ -5,18 +5,15 @@ import org.postgresql.core.Oid;
 
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract class NewRembRequest implements Request<Reimbursements> {
 
     private  String reimb_id;
     private Integer amount;
     private Timestamp submitted;
-    private Timestamp resolved;
     private String description;
-    private Oid receipt;
-    private String payment_id;
     private String author_id;
-    private String resolver_id;
     private String status_id;
     private String type_id;
 
@@ -44,14 +41,6 @@ public abstract class NewRembRequest implements Request<Reimbursements> {
         this.submitted = submitted;
     }
 
-    public Timestamp getResolved() {
-        return resolved;
-    }
-
-    public void setResolved(Timestamp resolved) {
-        this.resolved = resolved;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -60,36 +49,12 @@ public abstract class NewRembRequest implements Request<Reimbursements> {
         this.description = description;
     }
 
-    public Oid getReceipt() {
-        return receipt;
-    }
-
-    public void setReceipt(Oid receipt) {
-        this.receipt = receipt;
-    }
-
-    public String getPayment_id() {
-        return payment_id;
-    }
-
-    public void setPayment_id(String payment_id) {
-        this.payment_id = payment_id;
-    }
-
     public String getAuthor_id() {
         return author_id;
     }
 
     public void setAuthor_id(String author_id) {
         this.author_id = author_id;
-    }
-
-    public String getResolver_id() {
-        return resolver_id;
-    }
-
-    public void setResolver_id(String resolver_id) {
-        this.resolver_id = resolver_id;
     }
 
     public String getStatus_id() {
@@ -109,32 +74,29 @@ public abstract class NewRembRequest implements Request<Reimbursements> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        NewRembRequest that = (NewRembRequest) o;
-        return Objects.equals(reimb_id, that.reimb_id) && Objects.equals(amount, that.amount) && Objects.equals(submitted, that.submitted) && Objects.equals(resolved, that.resolved) && Objects.equals(description, that.description) && Objects.equals(receipt, that.receipt) && Objects.equals(payment_id, that.payment_id) && Objects.equals(author_id, that.author_id) && Objects.equals(resolver_id, that.resolver_id) && Objects.equals(status_id, that.status_id) && Objects.equals(type_id, that.type_id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(reimb_id, amount, submitted, resolved, description, receipt, payment_id, author_id, resolver_id, status_id, type_id);
-    }
-
-    @Override
     public String toString() {
         return "NewRembRequest{" +
                 "reimb_id='" + reimb_id + '\'' +
                 ", amount=" + amount +
                 ", submitted=" + submitted +
-                ", resolved=" + resolved +
                 ", description='" + description + '\'' +
-                ", receipt=" + receipt +
-                ", payment_id='" + payment_id + '\'' +
                 ", author_id='" + author_id + '\'' +
-                ", resolver_id='" + resolver_id + '\'' +
                 ", status_id='" + status_id + '\'' +
                 ", type_id='" + type_id + '\'' +
                 '}';
     }
+
+    @Override
+    public Reimbursements extractEntity() {
+        Reimbursements extractEntity = new Reimbursements();
+        extractEntity.setReimb_id(UUID.randomUUID().toString());
+        extractEntity.setAmount(this.amount);
+        extractEntity.setSubmitted(this.submitted);
+        extractEntity.setDescription(this.description);
+        extractEntity.setAuthor_id(this.author_id);
+        extractEntity.setStatus_id(this.status_id);
+        extractEntity.setType_id(this.type_id);
+        return extractEntity;
+    }
+
 }
