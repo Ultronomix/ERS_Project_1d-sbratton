@@ -28,7 +28,6 @@ public class UserServlet extends HttpServlet {
 
         this.userService = userService;
     }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
@@ -40,7 +39,7 @@ public class UserServlet extends HttpServlet {
         // If userSession is null, this means that the requester is not authenticated with the server
         if (userSession == null) {
             resp.setStatus(401);
-            resp.getWriter().write(jsonMapper.writeValueAsString(/*errorResponse*/new ErrorResponse(401,
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(401,
                     "Requester is not authenticated with the system, please login.")));
             return;
         }
@@ -81,7 +80,7 @@ public class UserServlet extends HttpServlet {
         resp.setContentType("application/json");
 
         try {
-            NewUserRequest requestBody =jsonMapper.readValue(req.getInputStream(), NewUserRequest.class);
+            NewUserRequest requestBody = jsonMapper.readValue(req.getInputStream(), NewUserRequest.class);
             ResourceCreationResponse responseBody;
             responseBody = userService.register(requestBody);
             resp.getWriter().write(jsonMapper.writeValueAsString(responseBody));
@@ -99,14 +98,5 @@ public class UserServlet extends HttpServlet {
             resp.setStatus(500); // Internal server error: Typically sent back when login fails or if a protected endpoint is hit by unauthorized user
             resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(500, e.getMessage())));
         }
-    }
-
-    public boolean requesterIsAdmin(UserResponse requester) {
-        return requester.getEmail().equals("bar123@revature.com");
-    }
-
-    public boolean requesterOwned(String resourceId, String requesterId) {
-        if (resourceId == null) return false;
-        return requesterId.equals(resourceId);
     }
 }

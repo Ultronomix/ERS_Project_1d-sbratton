@@ -8,6 +8,7 @@ import com.revature.ers.common.datasource.exceptions.DataSourceException;
 import com.revature.ers.common.datasource.exceptions.InvalidRequestException;
 import com.revature.ers.common.datasource.exceptions.ResourceNotFoundException;
 import com.revature.ers.common.datasource.exceptions.ResourcePersistenceException;
+import com.revature.ers.users.NewUserRequest;
 import com.revature.ers.users.UserResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -23,9 +24,10 @@ public class RembServlet extends HttpServlet {
     private final RembService rembService;
 
     public RembServlet(RembService rembService) {
-        this.rembService = rembService;
-    }
 
+        this.rembService = rembService;
+
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
@@ -45,18 +47,7 @@ public class RembServlet extends HttpServlet {
         try {
 
             String idToSearchFor = req.getParameter("id");
-            UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
-
-            System.out.println("request is admin: " + requesterIsAdmin(requester));
-            System.out.println("requester owns requested resource: " + requesterOwned(idToSearchFor, requester.getUser_id()));
-
-//            if (!requesterIsAdmin(requester) && !requesterOwned(idToSearchFor, requester.getUser_id())) {
-//                resp.setStatus(403); // Forbidden the system recognizes the user, but they don't have permission to be here
-//                resp.getWriter().write(jsonMapper.writeValueAsString(
-//                        /*errorResponse*/new ErrorResponse(403,
-//                                "Requester is not Permitted to communicate with this endpoint.")));
-//                return;
-//            }
+            RembResponse requester = (RembResponse) userSession.getAttribute("authUser");
 
             if (idToSearchFor == null) {
                 List<RembResponse> allReimbs = rembService.getAllReimbursements();
@@ -69,7 +60,7 @@ public class RembServlet extends HttpServlet {
 
         } catch (InvalidRequestException | JsonMappingException e) {
             resp.setStatus(400); // Bad request
-            resp.getWriter().write(jsonMapper.writeValueAsString(/*errorResponse*/new ErrorResponse(400, e.getMessage())));
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(400, e.getMessage())));
 
         } catch (ResourceNotFoundException e) {
 
@@ -79,10 +70,9 @@ public class RembServlet extends HttpServlet {
         } catch (DataSourceException e) {
 
             resp.setStatus(500); // Internal server error: Typically sent back when login fails or if a protected endpoint is hit by unauthorized user
-            resp.getWriter().write(jsonMapper.writeValueAsString(/*errorResponse*/new ErrorResponse(500, e.getMessage())));
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(500, e.getMessage())));
         }
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
@@ -91,7 +81,7 @@ public class RembServlet extends HttpServlet {
         try {
             NewRembRequest requestBody = jsonMapper.readValue(req.getInputStream(), NewRembRequest.class);
             ResourceCreationResponse responseBody;
-            responseBody = (ResourceCreationResponse) rembService.getAllReimbursements();
+            responseBody = rembService.register(requestBody);
             resp.getWriter().write(jsonMapper.writeValueAsString(responseBody));
         } catch (InvalidRequestException | JsonMappingException e) {
             resp.setStatus(400); // Bad request
@@ -107,15 +97,6 @@ public class RembServlet extends HttpServlet {
             resp.setStatus(500); // Internal server error: Typically sent back when login fails or if a protected endpoint is hit by unauthorized user
             resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(500, e.getMessage())));
         }
-    }
-
-    private boolean requesterIsAdmin(UserResponse requester) {
-        return requester.getUser_id().equals("sha234@revature.com");
-    }
-
-    private boolean requesterOwned(String resourceId, String requesterId) {
-        if (resourceId == null) return false;
-        return requesterId.equals(resourceId);
     }
 
 }
