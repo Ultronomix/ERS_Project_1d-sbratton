@@ -7,9 +7,9 @@ import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class NewRembRequest implements Request<Reimbursements> {
+public class NewRembRequest implements Request<Reimbursements> {
 
-    private  String reimb_id;
+    private String reimb_id;
     private Integer amount;
     private Timestamp submitted;
     private String description;
