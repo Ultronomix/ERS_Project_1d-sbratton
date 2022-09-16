@@ -50,16 +50,6 @@ public class UserServlet extends HttpServlet {
             String idToSearchFor = req.getParameter("id");
             UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
 
-//            System.out.println("request is admin: " + requesterIsAdmin(requester));
-//            System.out.println("requester owns requested resource: " + requesterOwned(idToSearchFor, requester.getUser_id()));
-
-            /*if (!requesterIsAdmin(requester) && !requesterOwned(idToSearchFor, requester.getUser_id())) {
-                resp.setStatus(403); // Forbidden the system recognizes the user, but they don't have permission to be here
-                resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(403,
-                                "Requester is not Permitted to communicate with this endpoint.")));
-                return;
-            }*/
-
             if (idToSearchFor == null) {
                 List<UserResponse> allUsers = userService.getAllUsers();
                 resp.addHeader("X-My-Custom-Header", "some-random-value");
