@@ -112,6 +112,44 @@ public class RembServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ObjectMapper jsonMapper = new ObjectMapper();
+        resp.setContentType("application/json");
+
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            resp.setStatus(401);
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(401,
+                    "Requester is not authenticated with the system, please login.")));
+            return;
+        }
+
+        try {
+            NewRembRequest requestBody = jsonMapper.readValue(req.getInputStream(), NewRembRequest.class);
+
+            UserResponse requester = (UserResponse) session.getAttribute("authUser");
+            requestBody.setAuthor_id(requester.getUser_id());
+
+            ResourceCreationResponse responseBody = rembService.createNewReimbursement(requestBody);
+            resp.getWriter().write(jsonMapper.writeValueAsString(responseBody));
+        } catch (InvalidRequestException | JsonMappingException e) {
+            resp.setStatus(400); // Bad request
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(400, e.getMessage())));
+
+        } catch (ResourcePersistenceException e) {
+
+            resp.setStatus(409); // Conflict: Indicates that the provided resource could not be saved without conflicting with other data
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(409, e.getMessage())));
+
+        } catch (DataSourceException e) {
+
+            resp.setStatus(500); // Internal server error: Typically sent back when login fails or if a protected endpoint is hit by unauthorized user
+            resp.getWriter().write(jsonMapper.writeValueAsString(new ErrorResponse(500, e.getMessage())));
+        }
+
+    }
+
     private boolean requesterIsAdmin(UserResponse requester) {
         return requester.getUser_id().equals("sha234@revature.com");
     }
