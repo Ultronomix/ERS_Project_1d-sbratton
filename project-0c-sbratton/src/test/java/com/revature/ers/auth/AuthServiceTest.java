@@ -90,22 +90,6 @@ public class AuthServiceTest {
 
     }
 
-    // TODO: Won't be able to perform until all Integers are changed to strings
-    /*@Test
-    public void test_authenticate_throwsInvalidRequestException_givenInvalidCredentials() {
-        // Arrange
-        Credentials credentialsStub = new Credentials("unknown", "credentials");
-        /*User userStub = new User("some-id", "Val", "id", "valid123@revature.com", "valid", "credentials", "25000");
-        when(mockUserDAO.findUserByUsernameAndPassword(anyString(), anyString())).thenReturn(Optional.empty());
-        UserResponse expectedResult = new UserResponse(userStub);
 
-        // Act
-        assertThrows(AuthenticationException.class, () -> {
-            sut.authenticate(credentialsStub);
-        });
-
-        // Assert
-        verify(mockUserDAO, times(1)).findUserByUsernameAndPassword(anyString(), anyString());
-    }*/
 
 }

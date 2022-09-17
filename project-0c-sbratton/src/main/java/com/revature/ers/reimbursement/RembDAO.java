@@ -18,7 +18,6 @@ public class RembDAO {
     private final String baseSelect = "SELECT reimb_id, amount, submitted, resolved, description, receipt, payment_id, " +
             "author_id, resolver_id, status_id, type_id " +
             "FROM ers.ers_reimbursements ";
-    //private List<Reimbursements> allReimbursements;
 
     public List<Reimbursements> getAllReimbursements() {
 
@@ -114,7 +113,6 @@ public class RembDAO {
                 reimbursement.setSubmitted(resultSet.getTimestamp("submitted"));
                 reimbursement.setResolved(resultSet.getTimestamp("resolved"));
                 reimbursement.setDescription(resultSet.getString("description"));
-                //reimbursement.setPayment_id(resultSet.getString("payment_id"));
                 reimbursement.setAuthor_id(resultSet.getString("author_id"));
                 reimbursement.setResolver_id(resultSet.getString("resolver_id"));
                 reimbursement.setStatus_id(resultSet.getString("status_id"));
