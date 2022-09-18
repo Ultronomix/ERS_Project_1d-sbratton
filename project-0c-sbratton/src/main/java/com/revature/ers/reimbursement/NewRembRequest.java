@@ -8,16 +8,16 @@ import java.util.UUID;
 
 public class NewRembRequest implements Request<Reimbursements> {
 
-    private double amount;
+    private float amount;
     private String description;
     private String author_id;
     private String type_id;
 
-    public double getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

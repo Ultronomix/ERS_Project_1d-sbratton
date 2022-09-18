@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Reimbursements {
 
     private String reimb_id;
-    private double amount;
+    private float amount;
     private Timestamp submitted;
     private Timestamp resolved;
     private String description;
@@ -23,7 +23,7 @@ public class Reimbursements {
         super();
     }
 
-    public Reimbursements(String reimb_id, double amount, Timestamp submitted, Timestamp resolved, String description, Oid receipt, String payment_id,
+    public Reimbursements(String reimb_id, float amount, Timestamp submitted, Timestamp resolved, String description, Oid receipt, String payment_id,
                           String author_id, String resolver_id, String status_id, String type_id) {
         this.reimb_id = reimb_id;
         this.amount = amount;
@@ -47,11 +47,11 @@ public class Reimbursements {
         this.reimb_id = reimb_id;
     }
 
-    public double getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
