@@ -44,10 +44,11 @@ public class UserServlet extends HttpServlet {
             return;
         }
 
-        try {
+        String idToSearchFor = req.getParameter("id");
 
-            String idToSearchFor = req.getParameter("id");
-            UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
+        UserResponse requester = (UserResponse) userSession.getAttribute("authUser");
+
+        try {
 
             if (idToSearchFor == null) {
                 List<UserResponse> allUsers = userService.getAllUsers();

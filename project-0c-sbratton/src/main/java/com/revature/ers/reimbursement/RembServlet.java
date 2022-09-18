@@ -126,12 +126,12 @@ public class RembServlet extends HttpServlet {
         }
 
         try {
-            NewRembRequest requestBody = jsonMapper.readValue(req.getInputStream(), NewRembRequest.class);
+            UpdateRemb requestBody = jsonMapper.readValue(req.getInputStream(), UpdateRemb.class);
 
             UserResponse requester = (UserResponse) session.getAttribute("authUser");
-            requestBody.setAuthor_id(requester.getUser_id());
+            requestBody.setStatus_id(requester.getUser_id());
 
-            ResourceCreationResponse responseBody = rembService.createNewReimbursement(requestBody);
+            RembResponse responseBody = rembService.findReimbursementsByStatusId(String.valueOf(requestBody));
             resp.getWriter().write(jsonMapper.writeValueAsString(responseBody));
         } catch (InvalidRequestException | JsonMappingException e) {
             resp.setStatus(400); // Bad request
